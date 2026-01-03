@@ -20,3 +20,4 @@ s.options.memSize_(2.pow(20)); // ~1 GB of active memory
 s.options.blockSize_(256); // ~1 GB of active memory
 // s.newBusAllocators;
 // 2.pow(20)
+)

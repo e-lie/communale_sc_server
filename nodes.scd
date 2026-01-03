@@ -3,21 +3,20 @@
 
 	s.bind({
 		~mainGrp = Group.new;
-		// ~radioGrp = Group.after(~mainGrp);
+		~spatGrp = Group.after(~mainGrp);
+		~masterGrp = Group.after(~spatGrp);
 
 
 
-
-
-/*~master = Synth.new(
-			\master_spat,
+		~master_multichannel = Synth.new(
+			\master_multichannel,
 			[
 				\amp, 0,
-				\in, ~bus[\masterSpat],
+				\in, ~bus[\master_multichannel],
 				\out, 0,
 			],
-			~masterGrpSpat
-		);*/
+			~masterGrp
+		);
 
 
 	});

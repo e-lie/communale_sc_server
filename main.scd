@@ -3,7 +3,7 @@
 "sample_loader.scd".loadRelative;
 "busses.scd".loadRelative;
 "nodes.scd".loadRelative;
-"events.scd".loadRelative;
+"osc_events.scd".loadRelative;
 "server.scd".loadRelative;
 // s.plotTree;
 // ###### <initialise global var ######/
