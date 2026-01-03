@@ -8,9 +8,6 @@
 // s.plotTree;
 // ###### <initialise global var ######/
 
-~projectPath=PathName(thisProcess.nowExecutingPath).parentPath;
-~sampleDirPath=~projectPath++"samples/";
-
 // 4 register functions
 ServerBoot.add(~loadSamples); // fill up the ~buffers dict
 ServerBoot.add(~makeBusses);
@@ -24,7 +21,7 @@ s.waitForBoot({
 	// "midi_connect.scd".loadRelative;
 	s.sync;
 	ServerTree.add(~makeNodes);
-	ServerTree.add(~makeEvents);
+	~makeEvents.value; // Call the function directly instead of adding to ServerTree
 	s.freeAll;
 	s.sync;
 	// ~connect_midi_devices.("Launch Control XL", "Launch Control XL");

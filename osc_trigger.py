@@ -17,10 +17,16 @@ while True:
     # mod_freq = freq * random.uniform(0.3, 2.0)
     # mod_index = random.uniform(0.5, 4.0)
     # amp = random.uniform(0.1, 0.4)
+    
+    retrig = random.choice([1])
+    rate = .2
+    sample_index = random.choice([1])
 
     # Envoyer le message OSC
     # client.send_message("/jeu1", [freq, mod_freq, mod_index, amp])
-    client.send_message("/jeu1")
+    params = ["jeu1", sample_index, retrig, rate]
+    client.send_message("/jeu1", params)
+    print(params)
 
     # Attendre avant le prochain trigger
-    time.sleep(random.uniform(0.3, 1.5))
+    time.sleep(random.uniform(0.03, .05))

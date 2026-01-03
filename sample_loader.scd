@@ -1,5 +1,8 @@
 (
 
+~projectPath=PathName(thisProcess.nowExecutingPath).parentPath;
+~sampleDirPath=~projectPath++"samples/";
+
 ~loadSamples = {
 	~buffers = Dictionary.new;
 
