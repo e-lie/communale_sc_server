@@ -1,0 +1,37 @@
+(
+// Load factory
+"sample_loader.scd".loadRelative;
+"busses.scd".loadRelative;
+"nodes.scd".loadRelative;
+"events.scd".loadRelative;
+"server.scd".loadRelative;
+// s.plotTree;
+// ###### <initialise global var ######/
+
+~projectPath=PathName(thisProcess.nowExecutingPath).parentPath;
+~sampleDirPath=~projectPath++"samples/";
+
+// 4 register functions
+ServerBoot.add(~loadSamples); // fill up the ~buffers dict
+ServerBoot.add(~makeBusses);
+ServerQuit.add(~cleanup);
+
+// 5 boot serv
+s.waitForBoot({
+
+	s.sync; //wait the server to be ok
+	"synthdefs.scd".loadRelative;
+	// "midi_connect.scd".loadRelative;
+	s.sync;
+	ServerTree.add(~makeNodes);
+	ServerTree.add(~makeEvents);
+	s.freeAll;
+	s.sync;
+	// ~connect_midi_devices.("Launch Control XL", "Launch Control XL");
+	"done".postln;
+});
+)
+
+///
+
+s.record(numChannels:4);
