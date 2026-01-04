@@ -2,27 +2,25 @@
 // ===== MASTER MULTICHANNEL =====
 // Bus master et synth de sortie
 
-// 1. Créer le bus master (12 canaux)
-~makeBus_master = {
-	~bus[\master_multichannel] = Bus.audio(s, 12);
-	"Master: Bus created (12 channels)".postln;
-};
+// SynthDef master déjà défini dans synthdefs.scd
 
-// 2. SynthDef master déjà défini dans synthdefs.scd
-
-// 3. Créer le synth master
+// Créer le bus et le synth master
 ~makeNode_master = {
 	s.bind({
+		// Créer le bus master (12 canaux)
+		~bus_master = Bus.audio(s, 12);
+
+		// Créer le synth master
 		~master_multichannel = Synth.new(
 			\master_multichannel,
 			[
 				\amp, 0,
-				\bus, ~bus[\master_multichannel],
+				\bus, ~bus_master,
 				\out, 0
 			],
 			~masterGrp
 		);
-		"Master: Master synth created".postln;
+		"Master: Bus and synth created (12 channels)".postln;
 	});
 };
 

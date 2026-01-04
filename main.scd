@@ -14,15 +14,9 @@
 // Initialize global variables
 ~projectPath = PathName(thisProcess.nowExecutingPath).parentPath;
 ~sampleDirPath = ~projectPath++"samples/";
-~bus = Dictionary.new;
 
 // Register ServerBoot callbacks
 ServerBoot.add(~loadSamples);           // Load samples into ~buffers
-ServerBoot.add(~makeBus_jeu1);          // Create jeu1 bus
-ServerBoot.add(~makeBus_jeu2);          // Create jeu2 bus
-ServerBoot.add(~makeBus_jeu3);          // Create jeu3 bus
-ServerBoot.add(~makeBus_bande_son);     // Create bande_son bus
-ServerBoot.add(~makeBus_master);        // Create master bus
 
 // Register cleanup
 ServerQuit.add(~cleanup);

@@ -2,13 +2,7 @@
 // ===== JEU 2 =====
 // Bus, SynthDef de spatialisation, Synth de spat, et OSC trigger
 
-// 1. Créer le bus audio
-~makeBus_jeu2 = {
-	~bus[\jeu2_samples] = Bus.audio(s, 1);
-	"Jeu2: Bus created".postln;
-};
-
-// 2. SynthDef de spatialisation pour jeu2
+// 1. SynthDef de spatialisation pour jeu2
 SynthDef(\spat_jeu2, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
@@ -19,19 +13,23 @@ SynthDef(\spat_jeu2, {
 	Out.ar(out, sig);
 }).add;
 
-// 3. Créer le synth de spatialisation
+// 2. Créer le bus et le synth de spatialisation
 ~makeNode_jeu2 = {
 	s.bind({
+		// Créer le bus audio
+		~bus_jeu2 = Bus.audio(s, 1);
+
+		// Créer le synth de spatialisation
 		~spat_jeu2 = Synth.new(
 			\spat_jeu2,
 			[
 				\amp, 0,
-				\bus, ~bus[\jeu2_samples],
-				\out, ~bus[\master_multichannel]
+				\bus, ~bus_jeu2,
+				\out, ~bus_master
 			],
 			~spatGrp
 		);
-		"Jeu2: Spat synth created".postln;
+		"Jeu2: Bus and spat synth created".postln;
 	});
 };
 
@@ -48,7 +46,7 @@ SynthDef(\spat_jeu2, {
 		rate = msg[4] ? 1;
 
 		// Récupérer le buffer
-		leBuf = ~toBuf.value(sampleDir, sampleIndex);
+		leBuf = ~buffers[sampleDir][sampleIndex];
 
 		"Jeu2 triggered: sampleDir=% sampleIndex=% retrig=% rate=%".format(
 			sampleDir, sampleIndex, retrig, rate
@@ -58,7 +56,7 @@ SynthDef(\spat_jeu2, {
 		jeu2Synth = Synth(\le_player, [
 			\buf, leBuf,
 			\amp, -3,
-			\out, ~bus[\jeu2_samples],
+			\out, ~bus_jeu2,
 			\rate, rate,
 			\kill, retrig
 		], ~mainGrp);

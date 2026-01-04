@@ -2,13 +2,7 @@
 // ===== BANDE SON =====
 // Bus, SynthDef de spatialisation, Synth de spat, et OSC trigger
 
-// 1. Créer le bus audio (stéréo)
-~makeBus_bande_son = {
-	~bus[\bande_son] = Bus.audio(s, 2);
-	"Bande son: Bus created (stereo)".postln;
-};
-
-// 2. SynthDef de spatialisation pour bande son (stéréo)
+// 1. SynthDef de spatialisation pour bande son (stéréo)
 SynthDef(\spat_bande_son, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
@@ -25,19 +19,23 @@ SynthDef(\spat_bande_son, {
 	Out.ar(out, sig);
 }).add;
 
-// 3. Créer le synth de spatialisation
+// 2. Créer le bus et le synth de spatialisation
 ~makeNode_bande_son = {
 	s.bind({
+		// Créer le bus audio stéréo
+		~bus_bande_son = Bus.audio(s, 2);
+
+		// Créer le synth de spatialisation
 		~spat_bande_son = Synth.new(
 			\spat_bande_son,
 			[
 				\amp, 0,
-				\bus, ~bus[\bande_son],
-				\out, ~bus[\master_multichannel]
+				\bus, ~bus_bande_son,
+				\out, ~bus_master
 			],
 			~spatGrp
 		);
-		"Bande son: Spat synth created".postln;
+		"Bande son: Bus and spat synth created".postln;
 	});
 };
 
@@ -54,7 +52,7 @@ SynthDef(\spat_bande_son, {
 		rate = msg[4] ? 1;
 
 		// Récupérer le buffer
-		leBuf = ~toBuf.value(sampleDir, sampleIndex);
+		leBuf = ~buffers[sampleDir][sampleIndex];
 
 		"Bande son triggered: sampleDir=% sampleIndex=% retrig=% rate=%".format(
 			sampleDir, sampleIndex, retrig, rate
@@ -64,7 +62,7 @@ SynthDef(\spat_bande_son, {
 		bandeSonSynth = Synth(\bande_son, [
 			\buf, leBuf,
 			\amp, -5,
-			\out, ~bus[\bande_son],
+			\out, ~bus_bande_son,
 			\rate, rate,
 			\kill, retrig
 		], ~mainGrp);
