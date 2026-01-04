@@ -15,6 +15,9 @@ s.options.blockSize_(256);
 "jeu2.scd".loadRelative;
 "jeu3.scd".loadRelative;
 "bande_son.scd".loadRelative;
+"input_stereo.scd".loadRelative;
+"input_quad.scd".loadRelative;
+"input_octo.scd".loadRelative;
 "master.scd".loadRelative;
 
 // Initialize global variables
@@ -50,6 +53,9 @@ s.waitForBoot({
 	ServerTree.add(~makeNode_jeu2);
 	ServerTree.add(~makeNode_jeu3);
 	ServerTree.add(~makeNode_bande_son);
+	ServerTree.add(~makeNode_input_stereo);
+	ServerTree.add(~makeNode_input_quad);
+	ServerTree.add(~makeNode_input_octo);
 	ServerTree.add(~makeNode_master);
 
 	s.freeAll;
@@ -60,9 +66,12 @@ s.waitForBoot({
 	~makeEvent_jeu2.value;
 	~makeEvent_jeu3.value;
 	~makeEvent_bande_son.value;
+	~makeEvent_input_stereo.value;
+	~makeEvent_input_quad.value;
+	~makeEvent_input_octo.value;
 
 	"=== Communale SC Server ready ===".postln;
-	"OSC handlers: /jeu1, /jeu2, /jeu3, /bande_son".postln;
+	"OSC handlers: /jeu1, /jeu2, /jeu3, /bande_son, /input_stereo, /input_quad, /input_octo".postln;
 });
 
 )
