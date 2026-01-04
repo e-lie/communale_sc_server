@@ -17,10 +17,10 @@ SynthDef(\bande_son, {
 
 // 2. SynthDef de spatialisation pour bande son (stéréo)
 SynthDef(\spat_bande_son, {
-	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
 
-	sig = In.ar(bus, 2);
+	sig = In.ar(in, 2);
 	sig =
 	[
 		PanAz.ar(6, sig[0], pos, 1.0, width, orientation),
@@ -43,7 +43,7 @@ SynthDef(\spat_bande_son, {
 			\spat_bande_son,
 			[
 				\amp, 0,
-				\bus, ~bus_bande_son,
+				\in, ~bus_bande_son,
 				\out, ~bus_master
 			],
 			~spatGrp

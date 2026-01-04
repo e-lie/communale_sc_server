@@ -17,10 +17,10 @@ SynthDef(\le_player_jeu2, {
 
 // 2. SynthDef de spatialisation pour jeu2
 SynthDef(\spat_jeu2, {
-	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
 
-	sig = In.ar(bus, 1);
+	sig = In.ar(in, 1);
 	sig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
 
 	Out.ar(out, sig);
@@ -37,7 +37,7 @@ SynthDef(\spat_jeu2, {
 			\spat_jeu2,
 			[
 				\amp, 0,
-				\bus, ~bus_jeu2,
+				\in, ~bus_jeu2,
 				\out, ~bus_master
 			],
 			~spatGrp

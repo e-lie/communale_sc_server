@@ -4,10 +4,10 @@
 
 // SynthDef master multichannel output
 SynthDef(\master_multichannel, {
-	arg bus, out=0, amp=0;
+	arg in, out=0, amp=0;
 	var sig;
 
-	sig = In.ar(bus, 12);
+	sig = In.ar(in, 12);
 	sig = sig * amp.dbamp.lag(2);
 	Out.ar(out, sig);
 }).add;
@@ -23,7 +23,7 @@ SynthDef(\master_multichannel, {
 			\master_multichannel,
 			[
 				\amp, 0,
-				\bus, ~bus_master,
+				\in, ~bus_master,
 				\out, 0
 			],
 			~masterGrp
