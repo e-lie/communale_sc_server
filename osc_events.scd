@@ -22,7 +22,7 @@
 		jeu1Synth = Synth(\le_player, [
 			\buf, leBuf,
 			\amp, -3,
-			\out, ~bus[\jeu_1_samples],
+			\out, ~bus[\jeu1_samples],
 			\rate, rate,
 			\kill, retrig
 		]);
