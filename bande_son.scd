@@ -2,7 +2,20 @@
 // ===== BANDE SON =====
 // Bus, SynthDef de spatialisation, Synth de spat, et OSC trigger
 
-// 1. SynthDef de spatialisation pour bande son (stéréo)
+// 1. SynthDef lecteur de bande son stéréo
+SynthDef(\bande_son, {
+	arg buf, amp=(-5), out=0, rate=1, kill=0;
+	var sig, envout;
+
+	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2);
+	sig = PlayBuf.ar(2, buf, rate, doneAction:2);
+	sig = sig * envout;
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// 2. SynthDef de spatialisation pour bande son (stéréo)
 SynthDef(\spat_bande_son, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
@@ -19,7 +32,7 @@ SynthDef(\spat_bande_son, {
 	Out.ar(out, sig);
 }).add;
 
-// 2. Créer le bus et le synth de spatialisation
+// 3. Créer le bus et le synth de spatialisation
 ~makeNode_bande_son = {
 	s.bind({
 		// Créer le bus audio stéréo

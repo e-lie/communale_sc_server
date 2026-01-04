@@ -2,7 +2,20 @@
 // ===== JEU 1 =====
 // Bus, SynthDef de spatialisation, Synth de spat, et OSC trigger
 
-// 1. SynthDef de spatialisation pour jeu1
+// 1. SynthDef lecteur de sample pour jeu1
+SynthDef(\le_player_jeu1, {
+	arg buf, amp=(-5), out=0, rate=1, kill=0;
+	var sig, envout;
+
+	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2);
+	sig = PlayBuf.ar(1, buf, rate, doneAction:2);
+	sig = sig * envout;
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// 2. SynthDef de spatialisation pour jeu1
 SynthDef(\spat_jeu1, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
@@ -13,7 +26,7 @@ SynthDef(\spat_jeu1, {
 	Out.ar(out, sig);
 }).add;
 
-// 2. Créer le bus et le synth de spatialisation
+// 3. Créer le bus et le synth de spatialisation
 ~makeNode_jeu1 = {
 	s.bind({
 		// Créer le bus audio
@@ -53,7 +66,7 @@ SynthDef(\spat_jeu1, {
 		).postln;
 
 		// Créer le synth de lecture
-		jeu1Synth = Synth(\le_player, [
+		jeu1Synth = Synth(\le_player_jeu1, [
 			\buf, leBuf,
 			\amp, -3,
 			\out, ~bus_jeu1,

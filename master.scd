@@ -2,7 +2,15 @@
 // ===== MASTER MULTICHANNEL =====
 // Bus master et synth de sortie
 
-// SynthDef master déjà défini dans synthdefs.scd
+// SynthDef master multichannel output
+SynthDef(\master_multichannel, {
+	arg bus, out=0, amp=0;
+	var sig;
+
+	sig = In.ar(bus, 12);
+	sig = sig * amp.dbamp.lag(2);
+	Out.ar(out, sig);
+}).add;
 
 // Créer le bus et le synth master
 ~makeNode_master = {
