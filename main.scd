@@ -10,6 +10,7 @@ s.options.blockSize_(256);
 
 // Load modules
 "sample_loader.scd".loadRelative;
+"synthdefs.scd".loadRelative;
 "jeu1.scd".loadRelative;
 "jeu2.scd".loadRelative;
 "jeu3.scd".loadRelative;

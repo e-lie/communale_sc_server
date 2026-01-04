@@ -1,38 +1,8 @@
 (
 // ===== BANDE SON =====
-// Bus, SynthDef de spatialisation, Synth de spat, et OSC trigger
+// Bus, synth de spat, et OSC trigger
 
-// 1. SynthDef lecteur de bande son stéréo
-SynthDef(\bande_son, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0;
-	var sig, envout;
-
-	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2);
-	sig = PlayBuf.ar(2, buf, rate, doneAction:2);
-	sig = sig * envout;
-	sig = sig * amp.dbamp;
-
-	Out.ar(out, sig);
-}).add;
-
-// 2. SynthDef de spatialisation pour bande son (stéréo)
-SynthDef(\spat_bande_son, {
-	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
-	var sig;
-
-	sig = In.ar(in, 2);
-	sig =
-	[
-		PanAz.ar(6, sig[0], pos, 1.0, width, orientation),
-		PanAz.ar(6, sig[1], pos, 1.0, width, orientation)
-	];
-
-	sig = sig * amp.dbamp;
-
-	Out.ar(out, sig);
-}).add;
-
-// 3. Créer le bus et le synth de spatialisation
+// Créer le bus et le synth de spatialisation
 ~makeNode_bande_son = {
 	s.bind({
 		// Créer le bus audio stéréo
@@ -40,7 +10,7 @@ SynthDef(\spat_bande_son, {
 
 		// Créer le synth de spatialisation
 		~spat_bande_son = Synth.new(
-			\spat_bande_son,
+			\spat_stereo,
 			[
 				\amp, 0,
 				\in, ~bus_bande_son,
@@ -72,12 +42,13 @@ SynthDef(\spat_bande_son, {
 		).postln;
 
 		// Créer le synth de lecture (stéréo)
-		bandeSonSynth = Synth(\bande_son, [
+		bandeSonSynth = Synth(\sample_player, [
 			\buf, leBuf,
 			\amp, -5,
 			\out, ~bus_bande_son,
 			\rate, rate,
-			\kill, retrig
+			\kill, retrig,
+			\numChan, 2
 		], ~mainGrp);
 
 	}, '/bande_son');
