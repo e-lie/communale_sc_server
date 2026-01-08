@@ -2,7 +2,7 @@
 // Function to create OSC event handlers
 ~makeEvents = {
 
-	OSCdef(\fmTrigger, {
+	OSCdef(\jeu_1_buf_trig, {
 		arg msg, time, addr, recvPort;
 		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
 
@@ -29,7 +29,38 @@
 
 
 
-	}, '/jeu1');
+	}, '/jeu1_buf_trig');
 
 	"OSC event handlers initialized (/jeu1)".postln;
+
+
+	OSCdef(\alarm, {
+		arg msg, time, addr, recvPort;
+
+		// Create the synth
+		~virgule = Routine{
+			var atk=0.25, rel=12, freq=440, rate=1;
+			~spat = Synth(\alarm, [\amp, 0, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
+			(atk*2).wait;
+			~spat.set(\freq, freq/2);
+			~spat.set(\rate, rate/2);
+			(rel/3).wait;
+			~spat.set(\rate, rate*10);
+			0.1.wait;
+			~spat.set(\rate, rate*100);
+			(rel/12).wait;
+			10.do{
+				arg i;
+				~spat.set(\rate, rate*(100 + (i*10)));
+				~spat.set(\freq, freq * i);
+
+				0.2.wait;
+			}
+		}.play;
+
+	}, '/alarm');
+
+	"OSC event handlers initialized (/alarm)".postln;
 };
+
+// ~makeEvents.print;

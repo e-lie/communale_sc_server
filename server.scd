@@ -14,7 +14,7 @@ s.options.inDevice_(
 	);
 
 s.options.numInputBusChannels_(12);
-s.options.numOutputBusChannels_(14);
+s.options.numOutputBusChannels_(12);
 s.options.sampleRate_(48000);
 s.options.memSize_(2.pow(20)); // ~1 GB of active memory
 s.options.blockSize_(256); // ~1 GB of active memory
