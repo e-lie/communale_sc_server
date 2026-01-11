@@ -2,13 +2,26 @@
 // ===== COMMON SYNTHDEFS =====
 // SynthDefs partagés entre tous les domaines
 
-// Lecteur de sample générique (mono ou stéréo)
-SynthDef(\sample_player, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0, numChan=1;
+// Lecteur de sample mono
+SynthDef(\sample_player_mono, {
+	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
 
 	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2);
-	sig = PlayBuf.ar(numChan, buf, rate, doneAction:2);
+	sig = PlayBuf.ar(1, buf, rate, doneAction:2);
+	sig = sig * envout;
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// Lecteur de sample stéréo
+SynthDef(\sample_player_stereo, {
+	arg buf, amp=(-5), out=0, rate=1, kill=0;
+	var sig, envout;
+
+	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2);
+	sig = PlayBuf.ar(2, buf, rate, doneAction:2);
 	sig = sig * envout;
 	sig = sig * amp.dbamp;
 

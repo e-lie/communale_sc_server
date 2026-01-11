@@ -42,13 +42,12 @@
 		).postln;
 
 		// Créer le synth de lecture (stéréo)
-		bandeSonSynth = Synth(\sample_player, [
+		bandeSonSynth = Synth(\sample_player_stereo, [
 			\buf, leBuf,
 			\amp, -5,
 			\out, ~bus_bande_son,
 			\rate, rate,
 			\kill, retrig,
-			\numChan, 2
 		], ~mainGrp);
 
 	}, '/bande_son');

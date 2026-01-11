@@ -42,13 +42,12 @@
 		).postln;
 
 		// Créer le synth de lecture
-		jeu2Synth = Synth(\sample_player, [
+		jeu2Synth = Synth(\sample_player_mono, [
 			\buf, leBuf,
 			\amp, -3,
 			\out, ~bus_jeu2,
 			\rate, rate,
 			\kill, retrig,
-			\numChan, 1
 		], ~mainGrp);
 
 	}, '/jeu2');

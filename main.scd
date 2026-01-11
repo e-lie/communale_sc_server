@@ -19,6 +19,7 @@ s.options.blockSize_(256);
 "input_quad.scd".loadRelative;
 "input_octo.scd".loadRelative;
 "master.scd".loadRelative;
+"gui.scd".loadRelative;
 
 // Initialize global variables
 ~projectPath = PathName(thisProcess.nowExecutingPath).parentPath;
@@ -70,8 +71,12 @@ s.waitForBoot({
 	~makeEvent_input_quad.value;
 	~makeEvent_input_octo.value;
 
+	// Create GUI
+	~makeGUI.value;
+
 	"=== Communale SC Server ready ===".postln;
 	"OSC handlers: /jeu1, /jeu2, /jeu3, /bande_son, /input_stereo, /input_quad, /input_octo".postln;
+	"GUI displayed".postln;
 });
 
 )
