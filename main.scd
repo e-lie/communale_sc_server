@@ -3,7 +3,7 @@
 
 // Server options configuration
 s.options.numInputBusChannels_(12);
-s.options.numOutputBusChannels_(14);
+s.options.numOutputBusChannels_(16); // 12 HP + 4 subs
 s.options.sampleRate_(48000);
 s.options.memSize_(2.pow(20)); // ~1 GB of active memory
 s.options.blockSize_(256);
@@ -15,6 +15,7 @@ s.options.blockSize_(256);
 "jeu2.scd".loadRelative;
 "jeu3.scd".loadRelative;
 "bande_son.scd".loadRelative;
+"alarm_domain.scd".loadRelative;
 "input_stereo.scd".loadRelative;
 "input_quad.scd".loadRelative;
 "input_octo.scd".loadRelative;
@@ -67,6 +68,7 @@ s.waitForBoot({
 	~makeEvent_jeu2.value;
 	~makeEvent_jeu3.value;
 	~makeEvent_bande_son.value;
+	~makeEvent_alarm.value;
 	~makeEvent_input_stereo.value;
 	~makeEvent_input_quad.value;
 	~makeEvent_input_octo.value;
@@ -75,7 +77,7 @@ s.waitForBoot({
 	~makeGUI.value;
 
 	"=== Communale SC Server ready ===".postln;
-	"OSC handlers: /jeu1, /jeu2, /jeu3, /bande_son, /input_stereo, /input_quad, /input_octo".postln;
+	"OSC handlers: /jeu1, /jeu2, /jeu3, /bande_son, /alarm, /input_stereo, /input_quad, /input_octo".postln;
 	"GUI displayed".postln;
 });
 
