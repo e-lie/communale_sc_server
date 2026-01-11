@@ -102,10 +102,9 @@ SynthDef(\spat_bande_son, {
 
 	Out.ar(out, sig);
 }).add;
-)
 // master qui fait la sommation et le filtrage des pistes vers les sub
 // CF shema d'implémentation
-(
+
 SynthDef(\master_multichannel, {
 	arg bus, out=0, amp=0, cross=120;
 	var sig, sub1, sub2, sub3, sub4;
@@ -114,17 +113,17 @@ SynthDef(\master_multichannel, {
 	// filtrage des subs en groupant des enceintes entre elles
 	// en suivant le plan, mais aussi arbitrairement par groupement de 3
 	// 13 == sub1 (enceintes 10, 11, 12)
-	sub1 = [sig[9], sig[10], sig[11]].sum;
-	sub1 = LPF.ar(sig,cross);
+	sub1 = ([sig[9], sig[10], sig[11]] * -10.dbamp).sum;
+	sub1 = LPF.ar(sub1,cross);
 	// 14 == sub2 (enceintes 1, 2, 9)
-	sub2 = [sig[0], sig[1], sig[8]].sum;
-	sub2 = LPF.ar(sig,cross);
+	sub2 = ([sig[0], sig[1], sig[8]] * -10.dbamp).sum;
+	sub2 = LPF.ar(sub2,cross);
 	// 15 == sub3 (enceintes 3, 7, 8)
-	sub3 = [sig[2], sig[6], sig[7]].sum;
-	sub3 = LPF.ar(sig,cross);
+	sub3 = ([sig[2], sig[6], sig[7]] * -10.dbamp).sum;
+	sub3 = LPF.ar(sub3,cross);
 	// 16 == sub4 (enceintes 4, 5, 6)
-	sub4 = [sig[9], sig[10], sig[11]].sum;
-	sub4 = LPF.ar(sig,cross);
+	sub4 = ([sig[9], sig[10], sig[11]] * -10.dbamp).sum;
+	sub4 = LPF.ar(sub4,cross);
 
 	sig = HPF.ar(sig, cross);
 	sig = sig ++ sub1 ++ sub2 ++ sub3 ++ sub4;
@@ -135,4 +134,4 @@ SynthDef(\master_multichannel, {
 
 )
 
-// [1, 2, 3, 4] ++ 1
+ [1, 2, 3, 4] * 3
