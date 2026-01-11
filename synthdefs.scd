@@ -43,7 +43,7 @@ SynthDef(\le_player, {
 	Out.ar(out, sig);
 }).add;
 
-OSCdef
+// OSCdef
 
 //spatialisation samples jeux vidéos
 SynthDef(\spat_samples, {
