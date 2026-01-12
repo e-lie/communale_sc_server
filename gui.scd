@@ -131,8 +131,11 @@
 		nil
 	);
 
-	// Stocker la fenêtre pour pouvoir la fermer plus tard
+	// Stocker la fenêtre et les widgets pour pouvoir les fermer/modifier plus tard
 	~guiWindow = win;
+	~guiMasterVolSlider = masterVolSlider;
+	~guiMasterVolLabel = masterVolLabel;
+	~guiMasterVolNumBox = masterVolNumBox;
 
 	"GUI created and displayed".postln;
 };

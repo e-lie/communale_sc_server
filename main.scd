@@ -6,6 +6,7 @@
 "osc_events.scd".loadRelative;
 "server.scd".loadRelative;
 "gui.scd".loadRelative;
+"midi_connect.scd".loadRelative;
 // s.plotTree;
 // ###### <initialise global var ######/
 
@@ -19,20 +20,21 @@ s.waitForBoot({
 
 	s.sync; //wait the server to be ok
 	"synthdefs.scd".loadRelative;
-	// "midi_connect.scd".loadRelative;
 	s.sync;
 	ServerTree.add(~makeNodes);
 	~makeEvents.value; // Call the function directly instead of adding to ServerTree
 	s.freeAll;
 	s.sync;
-	// ~connect_midi_devices.("Launch Control XL", "Launch Control XL");
+
+	// Connect MIDI devices
+	~connect_midi_devices.value;
 
 	// Create GUI
 	~makeGUI.value;
 
 	"=== Communale SC Server ready ===".postln;
 	"OSC handlers: /jeu1_buf_trig, /alarm, /input_stereo, /input_quad, /input_octo".postln;
-	"GUI displayed".postln;
+	"MIDI: CC 84 -> Master Volume".postln;
 });
 )
 
