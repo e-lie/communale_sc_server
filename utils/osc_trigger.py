@@ -8,7 +8,7 @@ import random
 # Configuration
 client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
 
-print("Triggering /jeu1 in loop... (Ctrl+C to stop)\n")
+print("Triggering /popup in loop... (Ctrl+C to stop)\n")
 
 # Boucle infinie avec paramètres variables
 while True:
@@ -24,9 +24,10 @@ while True:
 
     # Envoyer le message OSC
     # client.send_message("/jeu1", [freq, mod_freq, mod_index, amp])
-    params = ["jeu1", sample_index, retrig, rate]
-    client.send_message("/jeu1_buf_trig", params)
-    print(params)
+    # params = ["popup", sample_index, retrig, rate]
+    params = ["popup_win"]
+    client.send_message("/popup", params)
+    print("/popup " + str(params))
 
     # Attendre avant le prochain trigger
     time.sleep(random.uniform(0.03, .05))

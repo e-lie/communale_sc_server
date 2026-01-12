@@ -1,4 +1,8 @@
 (
+// ===== CONFIGURATION =====
+// Port OSC pour la réception des messages (par défaut: 57120)
+//~oscPort = 57120;  // Changez cette valeur pour utiliser un autre port
+
 // Load modules
 "sample_loader.scd".loadRelative;
 "busses.scd".loadRelative;
@@ -26,14 +30,19 @@ s.waitForBoot({
 	s.freeAll;
 	s.sync;
 
+	// Configure OSC port
+	//thisProcess.openUDPPort(~oscPort);
+	//"OSC: Listening on port %".format(~oscPort).postln;
+
 	// Connect MIDI devices
 	~connect_midi_devices.value;
 
 	// Create GUI
-	~makeGUI.value;
+	//~makeGUI.value;
 
 	"=== Communale SC Server ready ===".postln;
-	"OSC handlers: /jeu1_buf_trig, /alarm, /input_stereo, /input_quad, /input_octo".postln;
+	//"OSC handlers: /popup, /alarm, /input_stereo, /input_quad, /input_octo".postln;
+	"OSC port: %".format(~oscPort).postln;
 	"MIDI: CC 84 -> Master Volume".postln;
 });
 )
