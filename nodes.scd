@@ -79,49 +79,6 @@
 			~spatGrp
 		);
 
-		// // Input quad synth and spat
-		// ~input_quad_synth = Synth.new(
-		// 	\audio_in_quad,
-		// 	[
-		// 		\amp, 0,
-		// 		\inBus, 0,  // Hardware input bus (canaux 0-3)
-		// 		\out, ~bus[\input_quad]
-		// 	],
-		// 	~mainGrp
-		// );
-
-		// ~spat_input_quad = Synth.new(
-		// 	\spat_quad,
-		// 	[
-		// 		\amp, 0,
-		// 		\in, ~bus[\input_quad],
-		// 		\out, ~bus[\master_multichannel]
-		// 	],
-		// 	~spatGrp
-		// );
-
-		// // Input octo synth and spat
-		// ~input_octo_synth = Synth.new(
-		// 	\audio_in_octo,
-		// 	[
-		// 		\amp, 0,
-		// 		\inBus, 0,  // Hardware input bus (canaux 0-7)
-		// 		\out, ~bus[\input_octo]
-		// 	],
-		// 	~mainGrp
-		// );
-
-		// ~spat_input_octo = Synth.new(
-		// 	\spat_octo,
-		// 	[
-		// 		\amp, 0,
-		// 		\in, ~bus[\input_octo],
-		// 		\out, ~bus[\master_multichannel]
-		// 	],
-		// 	~spatGrp
-		// );
-
-
 	});
 };
 )
