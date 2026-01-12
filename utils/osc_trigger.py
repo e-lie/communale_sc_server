@@ -25,7 +25,7 @@ while True:
     # Envoyer le message OSC
     # client.send_message("/jeu1", [freq, mod_freq, mod_index, amp])
     params = ["jeu1", sample_index, retrig, rate]
-    client.send_message("/jeu1", params)
+    client.send_message("/jeu1_buf_trig", params)
     print(params)
 
     # Attendre avant le prochain trigger
