@@ -6,9 +6,9 @@ import time
 import random
 
 # Configuration
-client = udp_client.SimpleUDPClient("127.0.0.1", 57120)
+client = udp_client.SimpleUDPClient("192.168.0.103", 4646)
 
-print("Triggering /fm in loop... (Ctrl+C to stop)\n")
+print("Triggering /jeu1 in loop... (Ctrl+C to stop)\n")
 
 # Boucle infinie avec paramètres variables
 while True:
