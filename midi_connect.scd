@@ -23,8 +23,9 @@
 		dbVal = val.linlin(0, 127, -30, 0);
 		sliderVal = val.linlin(0, 127, 0, 1);
 
-		// Mettre à jour le synth master
+	
 		~master_multichannel.set(\amp, dbVal);
+
 
 		// Mettre à jour le GUI si il existe
 		if (~guiMasterVolSlider.notNil, {
@@ -34,8 +35,6 @@
 				~guiMasterVolNumBox.value = dbVal;
 			}.defer;
 		});
-
-		// "Master Volume (CC 84): MIDI=% -> %dB".format(val, dbVal.round(0.1)).postln;
 
 	}, 20); // CC number 84
 
@@ -118,6 +117,22 @@
 	}, 49); // CC number 49
 
 	"MIDI: CC 49 mapped to Input Stereo Crossfade (0=initial, 63=mix, 127=acousmonium)".postln;
+
+	// ===== ACOUSMONIUM HP 0 & 11 - CC 77 =====
+	MIDIdef.cc(\acousmoniumHP0_11, {
+		arg val, num, chan, src;
+		var dbVal;
+
+		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
+		dbVal = val.linlin(0, 127, -50, 0);
+
+		// Mettre à jour les enceintes 0 (left->HP0) et 11 (right->HP11)
+		~spat_input_stereo_acousmonium.set(\hp0_1, dbVal);
+		~spat_input_stereo_acousmonium.set(\hp11_12, dbVal);
+
+	}, 77); // CC number 77
+
+	"MIDI: CC 77 mapped to Acousmonium HP 0 & 11 (-50dB to 0dB)".postln;
 };
 
 )

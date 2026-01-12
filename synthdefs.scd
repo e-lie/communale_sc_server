@@ -110,19 +110,35 @@ SynthDef(\spat_stereo, {
 	Out.ar(out, spatSig);
 }).add;
 
-// Spatialisateur stéréo acousmonium (identique pour le moment)
+// Spatialisateur stéréo acousmonium avec routage manuel par enceinte
 SynthDef(\spat_stereo_acousmonium, {
-	arg bus, out=0, amp=0, pos0=0, pos1=0.5, orientation=0.5, width=2;
-	var sig, left, right, spatSig;
+	arg bus, out=0, amp=0,
+	    hp0_1=(-60), hp1_2=(-60), hp2_3=(-60), hp3_4=(-60),
+	    hp4_5=(-60), hp5_6=(-60), hp6_7=(-60), hp7_8=(-60),
+	    hp8_9=(-60), hp9_10=(-60), hp10_11=(-60), hp11_12=(-60);
+	var sig, spatSig;
 
 	sig = In.ar(bus, 2);
 
-	// Spatialiser chaque canal indépendamment sur 12 HP
-	left = PanAz.ar(12, sig[0], pos0, 1.0, width, orientation);
-	right = PanAz.ar(12, sig[1], pos1, 1.0, width, orientation);
+	// Créer 12 canaux avec routage manuel
+	// Par défaut, aucun signal (tous à -60dB)
+	// hp0_1 contrôle: canal 0 (left) -> enceinte 0
+	// hp11_12 contrôle: canal 1 (right) -> enceinte 11
+	spatSig = [
+		sig[0] * hp0_1.dbamp,     // Enceinte 0 (canal gauche)
+		sig[0] * hp1_2.dbamp,     // Enceinte 1
+		sig[0] * hp2_3.dbamp,     // Enceinte 2
+		sig[0] * hp3_4.dbamp,     // Enceinte 3
+		sig[0] * hp4_5.dbamp,     // Enceinte 4
+		sig[0] * hp5_6.dbamp,     // Enceinte 5
+		sig[0] * hp6_7.dbamp,     // Enceinte 6
+		sig[0] * hp7_8.dbamp,     // Enceinte 7
+		sig[0] * hp8_9.dbamp,     // Enceinte 8
+		sig[0] * hp9_10.dbamp,    // Enceinte 9
+		sig[0] * hp10_11.dbamp,   // Enceinte 10
+		sig[1] * hp11_12.dbamp    // Enceinte 11 (canal droit)
+	];
 
-	// Mixer les deux spatialisations
-	spatSig = left + right;
 	spatSig = spatSig * amp.dbamp;
 
 	Out.ar(out, spatSig);
@@ -185,7 +201,7 @@ SynthDef(\master_multichannel, {
 	sig = HPF.ar(sig, cross);
 	sig = sig ++ sub1 ++ sub2 ++ sub3 ++ sub4;
 
-	sig = sig * amp.dbamp.lag(10);
+	sig = sig * amp.dbamp.lag(1);
 	Out.ar(out, sig);
 }).add;
 
