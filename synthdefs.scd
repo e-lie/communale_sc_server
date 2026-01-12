@@ -200,6 +200,18 @@ SynthDef(\spat_baya, {
 	Out.ar(out, spatSig);
 }).add;
 
+// Entrée audio multichannel (inputs 0-11) -> direct vers master
+SynthDef(\audio_in_multichannel, {
+	arg out=0, amp=0, inBus=0;
+	var sig;
+
+	// Lire 12 canaux depuis les entrées hardware
+	sig = SoundIn.ar(Array.series(12, inBus, 1));
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
 // ===== MASTER =====
 
 // master qui fait la sommation et le filtrage des pistes vers les sub

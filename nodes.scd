@@ -120,6 +120,19 @@
 			~spatGrp
 		);
 
+		// ===== INPUT MULTICHANNEL SYNTH =====
+
+		// Input multichannel direct (hardware inputs 0-11)
+		~input_multichannel_synth = Synth.new(
+			\audio_in_multichannel,
+			[
+				\amp, 0,
+				\inBus, 0,  // Hardware input bus (canaux 0-11)
+				\out, ~bus[\master_multichannel]
+			],
+			~mainGrp
+		);
+
 		// Version directe (commentée)
 		// ~input_stereo_synth = Synth.new(
 		// 	\audio_in_stereo_direct,

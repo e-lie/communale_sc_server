@@ -90,6 +90,31 @@
 
 	"MIDI: CC 19 mapped to Input Baya Volume (-30dB to 0dB)".postln;
 
+	// ===== INPUT MULTICHANNEL VOLUME - CC 56 =====
+	MIDIdef.cc(\inputMultichannelVolume, {
+		arg val, num, chan, src;
+		var dbVal, sliderVal;
+
+		// Convertir la valeur MIDI (0-127) en dB (-30 à 0)
+		dbVal = val.linlin(0, 127, -30, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
+
+		// Mettre à jour le synth input multichannel
+		~input_multichannel_synth.set(\amp, dbVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiInputMultichannelSlider.notNil, {
+			{
+				~guiInputMultichannelSlider.value = sliderVal;
+				~guiInputMultichannelLabel.string = dbVal.round(0.1).asString ++ "dB";
+				~guiInputMultichannelNumBox.value = dbVal;
+			}.defer;
+		});
+
+	}, 56); // CC number 56
+
+	"MIDI: CC 56 mapped to Input Multichannel Volume (-30dB to 0dB)".postln;
+
 	// ===== INPUT STEREO POS0 (LEFT) - CC 13 =====
 	MIDIdef.cc(\inputStereoPos0, {
 		arg val, num, chan, src;
