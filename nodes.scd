@@ -58,7 +58,7 @@
 
 		// ===== INPUT AUDIO SYNTHS =====
 
-		// Input stereo avec spatialisation
+		// Input stereo avec spatialisation (deux chaînes parallèles)
 		~input_stereo_synth = Synth.new(
 			\audio_in_stereo,
 			[
@@ -69,10 +69,24 @@
 			~mainGrp
 		);
 
+		// Chaîne de spatialisation 1 (initiale)
 		~spat_input_stereo = Synth.new(
 			\spat_stereo,
 			[
-				\amp, 0,
+				\amp, 0,      // Commence à 0dB (chaîne initiale active par défaut)
+				\pos0, 0,     // Position du canal gauche (0-2)
+				\pos1, 0.5,   // Position du canal droit (0-2)
+				\bus, ~bus[\input_stereo],
+				\out, ~bus[\master_multichannel]
+			],
+			~spatGrp
+		);
+
+		// Chaîne de spatialisation 2 (acousmonium)
+		~spat_input_stereo_acousmonium = Synth.new(
+			\spat_stereo_acousmonium,
+			[
+				\amp, -60,    // Commence silencieux
 				\pos0, 0,     // Position du canal gauche (0-2)
 				\pos1, 0.5,   // Position du canal droit (0-2)
 				\bus, ~bus[\input_stereo],

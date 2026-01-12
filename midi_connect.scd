@@ -95,6 +95,29 @@
 	}, 29); // CC number 29
 
 	"MIDI: CC 29 mapped to Input Stereo Position 1 (Right channel, 0 to 2)".postln;
+
+	// ===== INPUT STEREO CROSSFADE - CC 49 =====
+	MIDIdef.cc(\inputStereoCrossfade, {
+		arg val, num, chan, src;
+		var amp1, amp2, crossfade;
+
+		// Convertir la valeur MIDI (0-127) en crossfade (0.0 à 1.0)
+		// 0 = chaîne initiale, 63 = mix 50/50, 127 = acousmonium
+		crossfade = val.linlin(0, 127, 0.0, 1.0);
+
+		// Calculer les amplitudes avec un crossfade de puissance égale
+		// chaîne initiale: pleine amplitude à 0, silence à 127
+		amp1 = ((1.0 - crossfade) * 60).linlin(0, 60, -60, 0);
+		// chaîne acousmonium: silence à 0, pleine amplitude à 127
+		amp2 = (crossfade * 60).linlin(0, 60, -60, 0);
+
+		// Mettre à jour les amplitudes des deux chaînes
+		~spat_input_stereo.set(\amp, amp1);
+		~spat_input_stereo_acousmonium.set(\amp, amp2);
+
+	}, 49); // CC number 49
+
+	"MIDI: CC 49 mapped to Input Stereo Crossfade (0=initial, 63=mix, 127=acousmonium)".postln;
 };
 
 )

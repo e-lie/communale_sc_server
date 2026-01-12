@@ -110,6 +110,24 @@ SynthDef(\spat_stereo, {
 	Out.ar(out, spatSig);
 }).add;
 
+// Spatialisateur stéréo acousmonium (identique pour le moment)
+SynthDef(\spat_stereo_acousmonium, {
+	arg bus, out=0, amp=0, pos0=0, pos1=0.5, orientation=0.5, width=2;
+	var sig, left, right, spatSig;
+
+	sig = In.ar(bus, 2);
+
+	// Spatialiser chaque canal indépendamment sur 12 HP
+	left = PanAz.ar(12, sig[0], pos0, 1.0, width, orientation);
+	right = PanAz.ar(12, sig[1], pos1, 1.0, width, orientation);
+
+	// Mixer les deux spatialisations
+	spatSig = left + right;
+	spatSig = spatSig * amp.dbamp;
+
+	Out.ar(out, spatSig);
+}).add;
+
 
 // ===== INPUT AUDIO SYNTHDEFS =====
 
