@@ -65,6 +65,36 @@
 	}, 36); // CC number 36
 
 	"MIDI: CC 36 mapped to Input Stereo Volume (-30dB to 0dB)".postln;
+
+	// ===== INPUT STEREO POS0 (LEFT) - CC 13 =====
+	MIDIdef.cc(\inputStereoPos0, {
+		arg val, num, chan, src;
+		var posVal;
+
+		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
+		posVal = val.linlin(0, 127, 0, 2);
+
+		// Mettre à jour la position du canal gauche
+		~spat_input_stereo.set(\pos0, posVal);
+
+	}, 13); // CC number 13
+
+	"MIDI: CC 13 mapped to Input Stereo Position 0 (Left channel, 0 to 2)".postln;
+
+	// ===== INPUT STEREO POS1 (RIGHT) - CC 29 =====
+	MIDIdef.cc(\inputStereoPos1, {
+		arg val, num, chan, src;
+		var posVal;
+
+		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
+		posVal = val.linlin(0, 127, 0, 2);
+
+		// Mettre à jour la position du canal droit
+		~spat_input_stereo.set(\pos1, posVal);
+
+	}, 29); // CC number 29
+
+	"MIDI: CC 29 mapped to Input Stereo Position 1 (Right channel, 0 to 2)".postln;
 };
 
 )

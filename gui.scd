@@ -54,7 +54,7 @@
 				.value_(0.5)
 				.action_({ |sl|
 					var dbVal = sl.value.linlin(0, 1, -30, 0);
-					~spat_input_stereo.set(\amp, dbVal);
+					~spat_input_stereo.set(\amp, dbVal);  // Contrôle via spatialisation
 					inputStereoNumBox.value = dbVal;
 					inputStereoLabel.string = dbVal.round(0.1) + "dB";
 				}),
@@ -65,7 +65,7 @@
 				.action_({ |nb|
 					var slVal = nb.value.linlin(-30, 0, 0, 1);
 					inputStereoSlider.value = slVal;
-					~spat_input_stereo.set(\amp, nb.value);
+					~spat_input_stereo.set(\amp, nb.value);  // Contrôle via spatialisation
 					inputStereoLabel.string = nb.value.round(0.1) + "dB";
 				})
 		),

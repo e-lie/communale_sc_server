@@ -92,27 +92,43 @@ SynthDef(\spat_mono, {
 	Out.ar(out, sig);
 }).add;
 
-// Spatialisateur stéréo (bande son notamment)
+// Spatialisateur stéréo avec positionnement indépendant pour chaque canal
 SynthDef(\spat_stereo, {
-	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
-	var sig;
+	arg bus, out=0, amp=0, pos0=0, pos1=0.5, orientation=0.5, width=2;
+	var sig, left, right, spatSig;
 
 	sig = In.ar(bus, 2);
-	sig =
-	[
-		PanAz.ar(6, sig[0], pos, 1.0, width, orientation),
-		PanAz.ar(6, sig[1], pos, 1.0, width, orientation)
-	];
 
-	sig = sig * amp.dbamp;
+	// Spatialiser chaque canal indépendamment sur 12 HP
+	left = PanAz.ar(12, sig[0], pos0, 1.0, width, orientation);
+	right = PanAz.ar(12, sig[1], pos1, 1.0, width, orientation);
 
-	Out.ar(out, sig);
+	// Mixer les deux spatialisations
+	spatSig = left + right;
+	spatSig = spatSig * amp.dbamp;
+
+	Out.ar(out, spatSig);
 }).add;
 
 
 // ===== INPUT AUDIO SYNTHDEFS =====
 
 // Entrée audio stéréo
+// Version directe sans spatialisation - route vers les 2 premiers canaux du master
+SynthDef(\audio_in_stereo_direct, {
+	arg out=0, amp=0, inBus=0;
+	var sig, outSig;
+
+	sig = SoundIn.ar([inBus, inBus+1]);
+	sig = sig * amp.dbamp;
+
+	// Créer un signal de 12 canaux avec le stéréo sur les 2 premiers canaux
+	outSig = [sig[0], sig[1]] ++ Silent.ar(10);
+
+	Out.ar(out, outSig);
+}).add;
+
+// Version avec bus intermédiaire (commentée pour le moment)
 SynthDef(\audio_in_stereo, {
 	arg out=0, amp=0, inBus=0;
 	var sig;

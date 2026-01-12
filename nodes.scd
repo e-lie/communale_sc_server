@@ -58,7 +58,7 @@
 
 		// ===== INPUT AUDIO SYNTHS =====
 
-		Input stereo synth and spat
+		// Input stereo avec spatialisation
 		~input_stereo_synth = Synth.new(
 			\audio_in_stereo,
 			[
@@ -73,11 +73,24 @@
 			\spat_stereo,
 			[
 				\amp, 0,
-				\in, ~bus[\input_stereo],
+				\pos0, 0,     // Position du canal gauche (0-2)
+				\pos1, 0.5,   // Position du canal droit (0-2)
+				\bus, ~bus[\input_stereo],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp
 		);
+
+		// Version directe (commentée)
+		// ~input_stereo_synth = Synth.new(
+		// 	\audio_in_stereo_direct,
+		// 	[
+		// 		\amp, 0,
+		// 		\inBus, 0,
+		// 		\out, ~bus[\master_multichannel]
+		// 	],
+		// 	~mainGrp
+		// );
 
 	});
 };
