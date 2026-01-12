@@ -7,7 +7,7 @@
 		~masterGrp = Group.after(~spatGrp);
 
 		~spat_jeu_1 = Synth.new(
-			\spat_samples,
+			\spat_mono,
 			[
 				\amp, 0,
 				\bus, ~bus[\jeu_1_samples],
@@ -17,7 +17,7 @@
 		);
 
 		~spat_jeu_2 = Synth.new(
-			\spat_samples,
+			\spat_mono,
 			[
 				\amp, 0,
 				\bus, ~bus[\jeu_2_samples],
@@ -27,7 +27,7 @@
 		);
 
 		~spat_jeu_3 = Synth.new(
-			\spat_samples,
+			\spat_mono,
 			[
 				\amp, 0,
 				\bus, ~bus[\jeu_3_samples],
