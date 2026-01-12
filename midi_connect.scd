@@ -65,6 +65,31 @@
 
 	"MIDI: CC 36 mapped to Input Stereo Volume (-30dB to 0dB)".postln;
 
+	// ===== INPUT BAYA VOLUME - CC 19 =====
+	MIDIdef.cc(\inputBayaVolume, {
+		arg val, num, chan, src;
+		var dbVal, sliderVal;
+
+		// Convertir la valeur MIDI (0-127) en dB (-30 à 0)
+		dbVal = val.linlin(0, 127, -30, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
+
+		// Mettre à jour le synth spat baya
+		~spat_baya.set(\amp, dbVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiInputBayaSlider.notNil, {
+			{
+				~guiInputBayaSlider.value = sliderVal;
+				~guiInputBayaLabel.string = dbVal.round(0.1).asString ++ "dB";
+				~guiInputBayaNumBox.value = dbVal;
+			}.defer;
+		});
+
+	}, 19); // CC number 19
+
+	"MIDI: CC 19 mapped to Input Baya Volume (-30dB to 0dB)".postln;
+
 	// ===== INPUT STEREO POS0 (LEFT) - CC 13 =====
 	MIDIdef.cc(\inputStereoPos0, {
 		arg val, num, chan, src;
@@ -94,6 +119,21 @@
 	}, 29); // CC number 29
 
 	"MIDI: CC 29 mapped to Input Stereo Position 1 (Right channel, 0 to 2)".postln;
+
+	// ===== INPUT BAYA POS - CC 35 =====
+	MIDIdef.cc(\inputBayaPos, {
+		arg val, num, chan, src;
+		var posVal;
+
+		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
+		posVal = val.linlin(0, 127, 0, 2);
+
+		// Mettre à jour la position baya
+		~spat_baya.set(\pos, posVal);
+
+	}, 35); // CC number 35
+
+	"MIDI: CC 35 mapped to Input Baya Position (0 to 2)".postln;
 
 	// ===== INPUT STEREO CROSSFADE - CC 49 =====
 	MIDIdef.cc(\inputStereoCrossfade, {

@@ -13,7 +13,7 @@ s.options.inDevice_(
 	// "MME : Ligne (4- ZOOM U-22 Driver)"
 	);
 
-s.options.numInputBusChannels_(12);
+s.options.numInputBusChannels_(16);  // 16 entrées hardware
 s.options.numOutputBusChannels_(16); // 12 HP + 4 subs
 s.options.sampleRate_(48000);
 s.options.memSize_(2.pow(20)); // ~1 GB of active memory

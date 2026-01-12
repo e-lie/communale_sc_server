@@ -173,6 +173,33 @@ SynthDef(\audio_in_stereo, {
 	Out.ar(out, sig);
 }).add;
 
+// Entrée audio baya stéréo (inputs 14-15) -> bus mono
+SynthDef(\audio_in_baya_stereo, {
+	arg out=0, amp=0, inBus=14;
+	var sig, mono;
+
+	sig = SoundIn.ar([inBus, inBus+1]);
+	// Somme stéréo en mono
+	mono = (sig[0] + sig[1]) * 0.5;
+	mono = mono * amp.dbamp;
+
+	Out.ar(out, mono);
+}).add;
+
+// Spatialisateur mono pour baya avec PanAz
+SynthDef(\spat_baya, {
+	arg bus, out=0, amp=0, pos=0, width=2, orientation=0.5;
+	var sig, spatSig;
+
+	sig = In.ar(bus, 1);
+
+	// Spatialiser le signal mono sur 12 HP avec PanAz
+	spatSig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
+	spatSig = spatSig * amp.dbamp;
+
+	Out.ar(out, spatSig);
+}).add;
+
 // ===== MASTER =====
 
 // master qui fait la sommation et le filtrage des pistes vers les sub

@@ -11,6 +11,7 @@
 
 	// Input audio buses
 	~bus.add(\input_stereo -> Bus.audio(s,2));
+	~bus.add(\input_baya -> Bus.audio(s,1));
 
 	~bus.add(\master_multichannel -> Bus.audio(s,12));
 };

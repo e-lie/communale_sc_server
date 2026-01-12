@@ -95,6 +95,31 @@
 			~spatGrp
 		);
 
+		// ===== INPUT BAYA SYNTHS =====
+
+		// Input baya stereo (hardware inputs 14-15)
+		~input_baya_synth = Synth.new(
+			\audio_in_baya_stereo,
+			[
+				\amp, 0,
+				\inBus, 14,  // Hardware input bus (canaux 14-15)
+				\out, ~bus[\input_baya]
+			],
+			~mainGrp
+		);
+
+		// Chaîne de spatialisation baya
+		~spat_baya = Synth.new(
+			\spat_baya,
+			[
+				\amp, 0,      // Commence à 0dB
+				\pos, 0,      // Position initiale (0-2)
+				\bus, ~bus[\input_baya],
+				\out, ~bus[\master_multichannel]
+			],
+			~spatGrp
+		);
+
 		// Version directe (commentée)
 		// ~input_stereo_synth = Synth.new(
 		// 	\audio_in_stereo_direct,
