@@ -30,8 +30,10 @@ SynthDef(\alarm, {
 	Out.ar(out,sig);
 }).add;
 
+// ===== SAMPLE PLAYERS =====
+
 //lecteur sample jeux vidéos mono
-SynthDef(\le_player, {
+SynthDef(\sample_player_mono, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
 
@@ -43,7 +45,6 @@ SynthDef(\le_player, {
 	Out.ar(out, sig);
 }).add;
 
-// OSCdef
 
 //spatialisation samples jeux vidéos
 SynthDef(\spat_samples, {
@@ -56,8 +57,19 @@ SynthDef(\spat_samples, {
 	Out.ar(out, sig);
 }).add;
 
+// Spatialisateur générique mono (nouvelle version)
+SynthDef(\spat_mono, {
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	var sig;
+
+	sig = In.ar(in, 1);
+	sig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
+
+	Out.ar(out, sig);
+}).add;
+
 //lecteur bande son
-SynthDef(\bande_son, {
+SynthDef(\sample_player_stereo, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
 
@@ -73,7 +85,7 @@ SynthDef(\bande_son, {
 // SPATIALISATION
 // -----________--------_______--------_
 
-SynthDef(\bande_son_multichannel, {
+SynthDef(\sample_player_multichannel, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
 
@@ -86,7 +98,10 @@ SynthDef(\bande_son_multichannel, {
 }).add;
 
 //spatialisation bande son
-SynthDef(\spat_bande_son, {
+
+
+// Spatialisateur générique stéréo (nouvelle version)
+SynthDef(\spat_stereo, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
 
@@ -99,9 +114,84 @@ SynthDef(\spat_bande_son, {
 
 	sig = sig * amp.dbamp;
 
+	Out.ar(out, sig);
+}).add;
+// ===== INPUT AUDIO SYNTHDEFS =====
+
+// Entrée audio stéréo
+SynthDef(\audio_in_stereo, {
+	arg out=0, amp=0, inBus=0;
+	var sig;
+
+	sig = SoundIn.ar([inBus, inBus+1]);
+	sig = sig * amp.dbamp;
 
 	Out.ar(out, sig);
 }).add;
+
+// Entrée audio quadriphonique
+SynthDef(\audio_in_quad, {
+	arg out=0, amp=0, inBus=0;
+	var sig;
+
+	sig = SoundIn.ar([inBus, inBus+1, inBus+2, inBus+3]);
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// Entrée audio octophonique
+SynthDef(\audio_in_octo, {
+	arg out=0, amp=0, inBus=0;
+	var sig;
+
+	sig = SoundIn.ar([inBus, inBus+1, inBus+2, inBus+3, inBus+4, inBus+5, inBus+6, inBus+7]);
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// ===== SPATIALISATION POUR INPUTS MULTICANAUX =====
+
+// Spatialisateur quadriphonique (4 canaux -> 12 canaux)
+SynthDef(\spat_quad, {
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	var sig;
+
+	sig = In.ar(in, 4);
+	sig = [
+		PanAz.ar(3, sig[0], pos, 1.0, width, orientation),  // Canal 1 sur 3 HP
+		PanAz.ar(3, sig[1], pos, 1.0, width, orientation),  // Canal 2 sur 3 HP
+		PanAz.ar(3, sig[2], pos, 1.0, width, orientation),  // Canal 3 sur 3 HP
+		PanAz.ar(3, sig[3], pos, 1.0, width, orientation)   // Canal 4 sur 3 HP
+	];
+
+	sig = Mix(sig);  // Mixer les 4 sorties panoramisées
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+// Spatialisateur octophonique (8 canaux -> 12 canaux)
+SynthDef(\spat_octo, {
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	var sig, spatSig;
+
+	sig = In.ar(in, 8);
+
+	// Distribuer les 8 canaux sur 12 sorties
+	spatSig = sig.collect({ |chan, i|
+		var chanPos = pos + (i / 8 * 2 - 1);  // Répartir autour de la position
+		PanAz.ar(12, chan, chanPos, 1.0, width, orientation)
+	});
+
+	spatSig = Mix(spatSig) * amp.dbamp;
+
+	Out.ar(out, spatSig);
+}).add;
+
+// ===== MASTER =====
+
 // master qui fait la sommation et le filtrage des pistes vers les sub
 // CF shema d'implémentation
 
@@ -133,5 +223,3 @@ SynthDef(\master_multichannel, {
 }).add;
 
 )
-
-// [1, 2, 3, 4] * 3

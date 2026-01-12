@@ -1,10 +1,11 @@
 (
-// Load factory
+// Load modules
 "sample_loader.scd".loadRelative;
 "busses.scd".loadRelative;
 "nodes.scd".loadRelative;
 "osc_events.scd".loadRelative;
 "server.scd".loadRelative;
+"gui.scd".loadRelative;
 // s.plotTree;
 // ###### <initialise global var ######/
 
@@ -25,7 +26,13 @@ s.waitForBoot({
 	s.freeAll;
 	s.sync;
 	// ~connect_midi_devices.("Launch Control XL", "Launch Control XL");
-	"done".postln;
+
+	// Create GUI
+	~makeGUI.value;
+
+	"=== Communale SC Server ready ===".postln;
+	"OSC handlers: /jeu1_buf_trig, /alarm, /input_stereo, /input_quad, /input_octo".postln;
+	"GUI displayed".postln;
 });
 )
 

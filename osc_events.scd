@@ -23,7 +23,7 @@
 		).postln;
 
 		// Create the synth
-		jeu1Synth = Synth(\le_player, [
+		jeu1Synth = Synth(\sample_player_mono, [
 			\buf, leBuf,
 			\amp, -3,
 			\out, ~bus[\jeu_1_samples],
@@ -138,6 +138,72 @@
 	}, '/alarm');
 
 	"OSC event handlers initialized (/alarm)".postln;
+
+	// ===== INPUT STEREO OSC HANDLER =====
+	OSCdef(\inputStereoControl, {
+		arg msg, time, addr, recvPort;
+		var amp, inBus, pos;
+
+		// Parse OSC arguments
+		amp = msg[1] ? 0;
+		inBus = msg[2] ? 0;
+		pos = msg[3] ? 0;
+
+		// Mettre à jour le synth d'input
+		~input_stereo_synth.set(\amp, amp, \inBus, inBus);
+
+		// Mettre à jour la spatialisation
+		~spat_input_stereo.set(\amp, amp, \pos, pos);
+
+		"Input Stereo: amp=% inBus=% pos=%".format(amp, inBus, pos).postln;
+
+	}, '/input_stereo');
+
+	"OSC event handlers initialized (/input_stereo)".postln;
+
+	// ===== INPUT QUAD OSC HANDLER =====
+	OSCdef(\inputQuadControl, {
+		arg msg, time, addr, recvPort;
+		var amp, inBus, pos;
+
+		// Parse OSC arguments
+		amp = msg[1] ? 0;
+		inBus = msg[2] ? 0;
+		pos = msg[3] ? 0;
+
+		// Mettre à jour le synth d'input
+		~input_quad_synth.set(\amp, amp, \inBus, inBus);
+
+		// Mettre à jour la spatialisation
+		~spat_input_quad.set(\amp, amp, \pos, pos);
+
+		"Input Quad: amp=% inBus=% pos=%".format(amp, inBus, pos).postln;
+
+	}, '/input_quad');
+
+	"OSC event handlers initialized (/input_quad)".postln;
+
+	// ===== INPUT OCTO OSC HANDLER =====
+	OSCdef(\inputOctoControl, {
+		arg msg, time, addr, recvPort;
+		var amp, inBus, pos;
+
+		// Parse OSC arguments
+		amp = msg[1] ? 0;
+		inBus = msg[2] ? 0;
+		pos = msg[3] ? 0;
+
+		// Mettre à jour le synth d'input
+		~input_octo_synth.set(\amp, amp, \inBus, inBus);
+
+		// Mettre à jour la spatialisation
+		~spat_input_octo.set(\amp, amp, \pos, pos);
+
+		"Input Octo: amp=% inBus=% pos=%".format(amp, inBus, pos).postln;
+
+	}, '/input_octo');
+
+	"OSC event handlers initialized (/input_octo)".postln;
 };
 
 // ~makeEvents.print;
