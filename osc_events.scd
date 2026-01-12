@@ -2,6 +2,10 @@
 // Function to create OSC event handlers
 ~makeEvents = {
 
+	// -----________--------_______--------_
+	// JEU 1 --
+	// -----________--------_______--------_
+
 	OSCdef(\jeu_1_buf_trig, {
 		arg msg, time, addr, recvPort;
 		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
@@ -33,6 +37,79 @@
 
 	"OSC event handlers initialized (/jeu1)".postln;
 
+	// -----________--------_______--------_
+	// JEU 2 --
+	// -----________--------_______--------_
+
+	OSCdef(\jeu_2_buf_trig, {
+		arg msg, time, addr, recvPort;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
+
+		// Parse OSC arguments with defaults
+		sampleDir = msg[1];
+		sampleIndex = msg[2] ? 0;
+		retrig = msg[3] ? 0;
+		rate = msg[4] ? 1;
+
+		leBuf = ~buffers[sampleDir][sampleIndex];
+
+		"Sample player triggered: sampleDir=% sampleIndex=% retrig=%".format(
+			sampleDir, sampleIndex, retrig
+		).postln;
+
+		// Create the synth
+		jeu1Synth = Synth(\le_player, [
+			\buf, leBuf,
+			\amp, -3,
+			\out, ~bus[\jeu_2_samples],
+			\rate, rate,
+			\kill, retrig
+		]);
+
+
+
+	}, '/jeu2_buf_trig');
+
+	"OSC event handlers initialized (/jeu2)".postln;
+
+	// -----________--------_______--------_
+	// JEU 3 --
+	// -----________--------_______--------_
+
+	OSCdef(\jeu_3_buf_trig, {
+		arg msg, time, addr, recvPort;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
+
+		// Parse OSC arguments with defaults
+		sampleDir = msg[1];
+		sampleIndex = msg[2] ? 0;
+		retrig = msg[3] ? 0;
+		rate = msg[4] ? 1;
+
+		leBuf = ~buffers[sampleDir][sampleIndex];
+
+		"Sample player triggered: sampleDir=% sampleIndex=% retrig=%".format(
+			sampleDir, sampleIndex, retrig
+		).postln;
+
+		// Create the synth
+		jeu1Synth = Synth(\le_player, [
+			\buf, leBuf,
+			\amp, -3,
+			\out, ~bus[\jeu_3_samples],
+			\rate, rate,
+			\kill, retrig
+		]);
+
+
+
+	}, '/jeu3_buf_trig');
+
+	"OSC event handlers initialized (/jeu3)".postln;
+
+	// -----________--------_______--------_
+	// ALARM --
+	// -----________--------_______--------_
 
 	OSCdef(\alarm, {
 		arg msg, time, addr, recvPort;

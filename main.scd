@@ -31,4 +31,4 @@ s.waitForBoot({
 
 ///
 
-s.record(numChannels:4);
+s.record(numChannels:12);
