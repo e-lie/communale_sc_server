@@ -8,43 +8,41 @@
 
 	OSCdef(\popup, {
 		arg msg, time, addr, recvPort;
-		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
 
 		// Parse OSC arguments with defaults
-		sampleDir = msg[1];
+		// Concaténer "popup_" avec msg[1] pour former le nom du dossier
+		sampleDir = ("popup_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
 
-		"-------------- %".format(sampleDir).postln;
+		// Vérifier si le dossier existe dans ~buffers
+		if (~buffers[sampleDir].notNil, {
+			// Obtenir le nombre de samples dans ce dossier
+			numSamples = ~buffers[sampleDir].size;
 
-		//numSamples = ~buffers[sampleDir].size;
-		//sampleIndex = msg[2] ? numSamples.rand;  // Index aléatoire entre 0 et numSamples-1
+			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
+			sampleIndex = msg[2] ? numSamples.rand;
+			retrig = msg[3] ? 0;
+			rate = msg[4] ? 1;
 
-		sampleIndex = 0;
-		
-		retrig = msg[3] ? 0;
-		rate = msg[4] ? 1;
+			// Récupérer le buffer
+			leBuf = ~buffers[sampleDir][sampleIndex];
 
-		"--- %".format(~buffers[sampleDir]).postln;
+			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
+				sampleDir, sampleIndex, numSamples, retrig, rate
+			).postln;
 
-		"Sample player triggered: sampleDir=% sampleIndex=% retrig=%".format(
-			sampleDir, sampleIndex, retrig
-		).postln;
-
-		
-
-		//leBuf = ~buffers[sampleDir][sampleIndex];
-
-
-
-		// // Create the synth
-		// jeu1Synth = Synth(\sample_player_mono, [
-		// 	\buf, leBuf,
-		// 	\amp, -3,
-		// 	\out, ~bus[\jeu_1_samples],
-		// 	\rate, rate,
-		// 	\kill, retrig
-		// ]);
-
-
+			// Créer le synth
+			jeu1Synth = Synth(\sample_player_mono, [
+				\buf, leBuf,
+				\amp, -3,
+				\out, ~bus[\jeu_1_samples],
+				\rate, rate,
+				\kill, retrig
+			]);
+			
+		}, {
+			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
+		});
 
 	}, '/popup');
 

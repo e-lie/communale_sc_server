@@ -25,7 +25,7 @@ while True:
     # Envoyer le message OSC
     # client.send_message("/jeu1", [freq, mod_freq, mod_index, amp])
     # params = ["popup", sample_index, retrig, rate]
-    params = ["popup_win"]
+    params = ["win"]
     client.send_message("/popup", params)
     print("/popup " + str(params))
 
