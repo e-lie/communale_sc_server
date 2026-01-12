@@ -59,67 +59,67 @@
 		// ===== INPUT AUDIO SYNTHS =====
 
 		// Input stereo synth and spat
-		~input_stereo_synth = Synth.new(
-			\audio_in_stereo,
-			[
-				\amp, 0,
-				\inBus, 0,  // Hardware input bus (canaux 0-1)
-				\out, ~bus[\input_stereo]
-			],
-			~mainGrp
-		);
+		// ~input_stereo_synth = Synth.new(
+		// 	\audio_in_stereo,
+		// 	[
+		// 		\amp, 0,
+		// 		\inBus, 0,  // Hardware input bus (canaux 0-1)
+		// 		\out, ~bus[\input_stereo]
+		// 	],
+		// 	~mainGrp
+		// );
 
-		~spat_input_stereo = Synth.new(
-			\spat_stereo,
-			[
-				\amp, 0,
-				\in, ~bus[\input_stereo],
-				\out, ~bus[\master_multichannel]
-			],
-			~spatGrp
-		);
+		// ~spat_input_stereo = Synth.new(
+		// 	\spat_stereo,
+		// 	[
+		// 		\amp, 0,
+		// 		\in, ~bus[\input_stereo],
+		// 		\out, ~bus[\master_multichannel]
+		// 	],
+		// 	~spatGrp
+		// );
 
-		// Input quad synth and spat
-		~input_quad_synth = Synth.new(
-			\audio_in_quad,
-			[
-				\amp, 0,
-				\inBus, 0,  // Hardware input bus (canaux 0-3)
-				\out, ~bus[\input_quad]
-			],
-			~mainGrp
-		);
+		// // Input quad synth and spat
+		// ~input_quad_synth = Synth.new(
+		// 	\audio_in_quad,
+		// 	[
+		// 		\amp, 0,
+		// 		\inBus, 0,  // Hardware input bus (canaux 0-3)
+		// 		\out, ~bus[\input_quad]
+		// 	],
+		// 	~mainGrp
+		// );
 
-		~spat_input_quad = Synth.new(
-			\spat_quad,
-			[
-				\amp, 0,
-				\in, ~bus[\input_quad],
-				\out, ~bus[\master_multichannel]
-			],
-			~spatGrp
-		);
+		// ~spat_input_quad = Synth.new(
+		// 	\spat_quad,
+		// 	[
+		// 		\amp, 0,
+		// 		\in, ~bus[\input_quad],
+		// 		\out, ~bus[\master_multichannel]
+		// 	],
+		// 	~spatGrp
+		// );
 
-		// Input octo synth and spat
-		~input_octo_synth = Synth.new(
-			\audio_in_octo,
-			[
-				\amp, 0,
-				\inBus, 0,  // Hardware input bus (canaux 0-7)
-				\out, ~bus[\input_octo]
-			],
-			~mainGrp
-		);
+		// // Input octo synth and spat
+		// ~input_octo_synth = Synth.new(
+		// 	\audio_in_octo,
+		// 	[
+		// 		\amp, 0,
+		// 		\inBus, 0,  // Hardware input bus (canaux 0-7)
+		// 		\out, ~bus[\input_octo]
+		// 	],
+		// 	~mainGrp
+		// );
 
-		~spat_input_octo = Synth.new(
-			\spat_octo,
-			[
-				\amp, 0,
-				\in, ~bus[\input_octo],
-				\out, ~bus[\master_multichannel]
-			],
-			~spatGrp
-		);
+		// ~spat_input_octo = Synth.new(
+		// 	\spat_octo,
+		// 	[
+		// 		\amp, 0,
+		// 		\in, ~bus[\input_octo],
+		// 		\out, ~bus[\master_multichannel]
+		// 	],
+		// 	~spatGrp
+		// );
 
 
 	});

@@ -30,4 +30,4 @@ while True:
     print("/popup " + str(params))
 
     # Attendre avant le prochain trigger
-    time.sleep(random.uniform(0.03, .05))
+    time.sleep(random.uniform(1, 1))

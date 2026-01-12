@@ -1,7 +1,7 @@
 (
 // ===== CONFIGURATION =====
 // Port OSC pour la réception des messages (par défaut: 57120)
-//~oscPort = 57120;  // Changez cette valeur pour utiliser un autre port
+~oscPort = 4646;  // Changez cette valeur pour utiliser un autre port
 
 // Load modules
 "sample_loader.scd".loadRelative;
@@ -31,8 +31,8 @@ s.waitForBoot({
 	s.sync;
 
 	// Configure OSC port
-	//thisProcess.openUDPPort(~oscPort);
-	//"OSC: Listening on port %".format(~oscPort).postln;
+	thisProcess.openUDPPort(~oscPort);
+	"OSC: Listening on port %".format(~oscPort).postln;
 
 	// Connect MIDI devices
 	~connect_midi_devices.value;

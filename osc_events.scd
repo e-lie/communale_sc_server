@@ -38,50 +38,63 @@
 				\out, ~bus[\jeu_1_samples],
 				\rate, rate,
 				\kill, retrig
-			]);
-			
+			], ~mainGrp);
+
 		}, {
 			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
 		});
 
 	}, '/popup');
 
-	"OSC event handlers initialized (/jeu1)".postln;
+	"OSC event handlers initialized (/popup)".postln;
 
 	// -----________--------_______--------_
 	// JEU 2 --
 	// -----________--------_______--------_
 
-	OSCdef(\jeu_2_buf_trig, {
+	///
+	//color -- params -- crash > créer les dossier de samples
+	OSCdef(\mirror, {
 		arg msg, time, addr, recvPort;
-		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
 
 		// Parse OSC arguments with defaults
-		sampleDir = msg[1];
-		sampleIndex = msg[2] ? 0;
-		retrig = msg[3] ? 0;
-		rate = msg[4] ? 1;
+		// Concaténer "popup_" avec msg[1] pour former le nom du dossier
+		sampleDir = ("mirror_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
 
-		leBuf = ~buffers[sampleDir][sampleIndex];
+		// Vérifier si le dossier existe dans ~buffers
+		if (~buffers[sampleDir].notNil, {
+			// Obtenir le nombre de samples dans ce dossier
+			numSamples = ~buffers[sampleDir].size;
 
-		"Sample player triggered: sampleDir=% sampleIndex=% retrig=%".format(
-			sampleDir, sampleIndex, retrig
-		).postln;
+			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
+			sampleIndex = msg[2] ? numSamples.rand;
+			retrig = msg[3] ? 0;
+			rate = msg[4] ? 1;
 
-		// Create the synth
-		jeu1Synth = Synth(\le_player, [
-			\buf, leBuf,
-			\amp, -3,
-			\out, ~bus[\jeu_2_samples],
-			\rate, rate,
-			\kill, retrig
-		]);
+			// Récupérer le buffer
+			leBuf = ~buffers[sampleDir][sampleIndex];
 
+			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
+				sampleDir, sampleIndex, numSamples, retrig, rate
+			).postln;
 
+			// Créer le synth
+			jeu1Synth = Synth(\sample_player_mono, [
+				\buf, leBuf,
+				\amp, -3,
+				\out, ~bus[\jeu_1_samples],
+				\rate, rate,
+				\kill, retrig
+			], ~mainGrp);
 
-	}, '/jeu2_buf_trig');
+		}, {
+			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
+		});
 
-	"OSC event handlers initialized (/jeu2)".postln;
+	}, '/mirror');
+
+	"OSC event handlers initialized (/popup)".postln;
 
 	// -----________--------_______--------_
 	// JEU 3 --
@@ -124,11 +137,12 @@
 
 	OSCdef(\alarm, {
 		arg msg, time, addr, recvPort;
+		var virgule;
 
 		// Create the synth
-		~virgule = Routine{
+		virgule = Routine{
 			var atk=0.25, rel=12, freq=440, rate=1;
-			~spat = Synth(\alarm, [\amp, 0, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
+			~spat = Synth(\alarm, [\amp, -30, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
 			(atk*2).wait;
 			~spat.set(\freq, freq/2);
 			~spat.set(\rate, rate/2);
