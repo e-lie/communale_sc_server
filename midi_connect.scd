@@ -133,6 +133,26 @@
 	}, 77); // CC number 77
 
 	"MIDI: CC 77 mapped to Acousmonium HP 0 & 11 (-50dB to 0dB)".postln;
+
+	// ===== ACOUSMONIUM HP 1, 2, 9, 10 - CC 78 =====
+	MIDIdef.cc(\acousmoniumHP1_2_9_10, {
+		arg val, num, chan, src;
+		var dbVal;
+
+		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
+		dbVal = val.linlin(0, 127, -50, 0);
+
+		// Mettre à jour les enceintes:
+		// Canal 0 (left) -> HP 1 et 2
+		~spat_input_stereo_acousmonium.set(\hp1_2, dbVal);
+		~spat_input_stereo_acousmonium.set(\hp2_3, dbVal);
+		// Canal 1 (right) -> HP 9 et 10
+		~spat_input_stereo_acousmonium.set(\hp9_10, dbVal);
+		~spat_input_stereo_acousmonium.set(\hp10_11, dbVal);
+
+	}, 78); // CC number 78
+
+	"MIDI: CC 78 mapped to Acousmonium HP 1, 2, 9, 10 (-50dB to 0dB)".postln;
 };
 
 )

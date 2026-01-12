@@ -122,20 +122,20 @@ SynthDef(\spat_stereo_acousmonium, {
 
 	// Créer 12 canaux avec routage manuel
 	// Par défaut, aucun signal (tous à -60dB)
-	// hp0_1 contrôle: canal 0 (left) -> enceinte 0
-	// hp11_12 contrôle: canal 1 (right) -> enceinte 11
+	// Canal gauche (sig[0]) -> HP 0-8
+	// Canal droit (sig[1]) -> HP 9-11
 	spatSig = [
 		sig[0] * hp0_1.dbamp,     // Enceinte 0 (canal gauche)
-		sig[0] * hp1_2.dbamp,     // Enceinte 1
-		sig[0] * hp2_3.dbamp,     // Enceinte 2
-		sig[0] * hp3_4.dbamp,     // Enceinte 3
-		sig[0] * hp4_5.dbamp,     // Enceinte 4
-		sig[0] * hp5_6.dbamp,     // Enceinte 5
-		sig[0] * hp6_7.dbamp,     // Enceinte 6
-		sig[0] * hp7_8.dbamp,     // Enceinte 7
-		sig[0] * hp8_9.dbamp,     // Enceinte 8
-		sig[0] * hp9_10.dbamp,    // Enceinte 9
-		sig[0] * hp10_11.dbamp,   // Enceinte 10
+		sig[0] * hp1_2.dbamp,     // Enceinte 1 (canal gauche)
+		sig[0] * hp2_3.dbamp,     // Enceinte 2 (canal gauche)
+		sig[0] * hp3_4.dbamp,     // Enceinte 3 (canal gauche)
+		sig[0] * hp4_5.dbamp,     // Enceinte 4 (canal gauche)
+		sig[0] * hp5_6.dbamp,     // Enceinte 5 (canal gauche)
+		sig[0] * hp6_7.dbamp,     // Enceinte 6 (canal gauche)
+		sig[0] * hp7_8.dbamp,     // Enceinte 7 (canal gauche)
+		sig[0] * hp8_9.dbamp,     // Enceinte 8 (canal gauche)
+		sig[1] * hp9_10.dbamp,    // Enceinte 9 (canal droit)
+		sig[1] * hp10_11.dbamp,   // Enceinte 10 (canal droit)
 		sig[1] * hp11_12.dbamp    // Enceinte 11 (canal droit)
 	];
 
