@@ -58,26 +58,26 @@
 
 		// ===== INPUT AUDIO SYNTHS =====
 
-		// Input stereo synth and spat
-		// ~input_stereo_synth = Synth.new(
-		// 	\audio_in_stereo,
-		// 	[
-		// 		\amp, 0,
-		// 		\inBus, 0,  // Hardware input bus (canaux 0-1)
-		// 		\out, ~bus[\input_stereo]
-		// 	],
-		// 	~mainGrp
-		// );
+		Input stereo synth and spat
+		~input_stereo_synth = Synth.new(
+			\audio_in_stereo,
+			[
+				\amp, 0,
+				\inBus, 0,  // Hardware input bus (canaux 0-1)
+				\out, ~bus[\input_stereo]
+			],
+			~mainGrp
+		);
 
-		// ~spat_input_stereo = Synth.new(
-		// 	\spat_stereo,
-		// 	[
-		// 		\amp, 0,
-		// 		\in, ~bus[\input_stereo],
-		// 		\out, ~bus[\master_multichannel]
-		// 	],
-		// 	~spatGrp
-		// );
+		~spat_input_stereo = Synth.new(
+			\spat_stereo,
+			[
+				\amp, 0,
+				\in, ~bus[\input_stereo],
+				\out, ~bus[\master_multichannel]
+			],
+			~spatGrp
+		);
 
 		// // Input quad synth and spat
 		// ~input_quad_synth = Synth.new(

@@ -3,7 +3,9 @@
 
 ~makeGUI = {
 	var win, masterVolSlider, masterVolLabel, masterVolNumBox;
-	var inputStereoSlider, inputQuadSlider, inputOctoSlider;
+	var inputStereoSlider, inputStereoLabel, inputStereoNumBox;
+	var inputQuadSlider, inputQuadLabel, inputQuadNumBox;
+	var inputOctoSlider, inputOctoLabel, inputOctoNumBox;
 	var jeu1Slider, jeu2Slider, jeu3Slider, bandeSonSlider;
 
 	// Créer la fenêtre principale
@@ -54,8 +56,20 @@
 				.orientation_(\horizontal)
 				.value_(0.5)
 				.action_({ |sl|
-					var dbVal = sl.value.linlin(0, 1, -60, 12);
+					var dbVal = sl.value.linlin(0, 1, -30, 0);
 					~spat_input_stereo.set(\amp, dbVal);
+					inputStereoNumBox.value = dbVal;
+					inputStereoLabel.string = dbVal.round(0.1) + "dB";
+				}),
+			inputStereoLabel = StaticText().string_("0.0 dB").minWidth_(60),
+			inputStereoNumBox = NumberBox()
+				.value_(0)
+				.minWidth_(60)
+				.action_({ |nb|
+					var slVal = nb.value.linlin(-30, 0, 0, 1);
+					inputStereoSlider.value = slVal;
+					~spat_input_stereo.set(\amp, nb.value);
+					inputStereoLabel.string = nb.value.round(0.1) + "dB";
 				})
 		),
 		HLayout(
@@ -136,6 +150,9 @@
 	~guiMasterVolSlider = masterVolSlider;
 	~guiMasterVolLabel = masterVolLabel;
 	~guiMasterVolNumBox = masterVolNumBox;
+	~guiInputStereoSlider = inputStereoSlider;
+	~guiInputStereoLabel = inputStereoLabel;
+	~guiInputStereoNumBox = inputStereoNumBox;
 
 	"GUI created and displayed".postln;
 };

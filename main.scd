@@ -9,7 +9,7 @@
 "nodes.scd".loadRelative;
 "osc_events.scd".loadRelative;
 "server.scd".loadRelative;
-// "gui.scd".loadRelative;
+"gui.scd".loadRelative;
 "midi_connect.scd".loadRelative;
 // s.plotTree;
 // ###### <initialise global var ######/
@@ -38,7 +38,7 @@ s.waitForBoot({
 	~connect_midi_devices.value;
 
 	// Create GUI
-	//~makeGUI.value;
+	~makeGUI.value;
 
 	"=== Communale SC Server ready ===".postln;
 	//"OSC handlers: /popup, /alarm, /input_stereo, /input_quad, /input_octo".postln;
