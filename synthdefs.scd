@@ -46,29 +46,7 @@ SynthDef(\sample_player_mono, {
 }).add;
 
 
-//spatialisation samples jeux vidéos
-SynthDef(\spat_samples, {
-	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
-	var sig;
-
-	sig = In.ar(bus, 1);
-	sig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
-
-	Out.ar(out, sig);
-}).add;
-
-// Spatialisateur générique mono (nouvelle version)
-SynthDef(\spat_mono, {
-	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
-	var sig;
-
-	sig = In.ar(in, 1);
-	sig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
-
-	Out.ar(out, sig);
-}).add;
-
-//lecteur bande son
+//lecteur bande son notamment
 SynthDef(\sample_player_stereo, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
@@ -81,10 +59,8 @@ SynthDef(\sample_player_stereo, {
 	Out.ar(out, sig);
 }).add;
 
-// -----________--------_______--------_
-// SPATIALISATION
-// -----________--------_______--------_
 
+// lecteur bande son multichannel
 SynthDef(\sample_player_multichannel, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0;
 	var sig, envout;
@@ -97,10 +73,24 @@ SynthDef(\sample_player_multichannel, {
 	Out.ar(out, sig);
 }).add;
 
-//spatialisation bande son
+
+// -----________--------_______--------_
+// SPATIALISATION
+// -----________--------_______--------_
 
 
-// Spatialisateur générique stéréo (nouvelle version)
+// Spatialisateur mono (pour les jeux videos notamment)
+SynthDef(\spat_mono, {
+	arg in, out=0, amp=0, pos=0, orientation=0.5, width=2;
+	var sig;
+
+	sig = In.ar(in, 1);
+	sig = PanAz.ar(12, sig, pos, 1.0, width, orientation);
+
+	Out.ar(out, sig);
+}).add;
+
+// Spatialisateur stéréo (bande son notamment)
 SynthDef(\spat_stereo, {
 	arg bus, out=0, amp=0, pos=0, orientation=0.5, width=2;
 	var sig;
@@ -116,6 +106,8 @@ SynthDef(\spat_stereo, {
 
 	Out.ar(out, sig);
 }).add;
+
+
 // ===== INPUT AUDIO SYNTHDEFS =====
 
 // Entrée audio stéréo
