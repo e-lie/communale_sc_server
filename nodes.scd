@@ -1,25 +1,28 @@
 (
 ~makeNodes = {
-
+	// OSCFunc.trace(false)
 	s.bind({
 		~mainGrp = Group.new;
 		~spatGrp = Group.after(~mainGrp);
 		~masterGrp = Group.after(~spatGrp);
 
+// pos -- jeu popup 0.35
 		~spat_jeu_1 = Synth.new(
 			\spat_mono,
 			[
 				\amp, 0,
+				\pos, 0.35,
 				\bus, ~bus[\popup_samples],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp
 		);
-
+// pos 0 -- jeu mirror
 		~spat_jeu_2 = Synth.new(
 			\spat_mono,
 			[
 				\amp, 0,
+				\pos, 0,
 				\bus, ~bus[\mirror_samples],
 				\out, ~bus[\master_multichannel]
 			],
@@ -30,7 +33,20 @@
 			\spat_mono,
 			[
 				\amp, 0,
+				\pos, 0.9,
 				\bus, ~bus[\words_samples],
+				\out, ~bus[\master_multichannel]
+			],
+			~spatGrp
+		);
+		~spat_jeu_3.set(\pos, 0.9);
+
+		~spat_jeu_cursed = Synth.new(
+			\spat_mono,
+			[
+				\amp, 0,
+				\pos, 0.7,
+				\bus, ~bus[\cursed_samples],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp

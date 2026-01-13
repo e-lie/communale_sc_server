@@ -109,14 +109,27 @@ SynthDef(\spat_stereo, {
 	sig = In.ar(bus, 2);
 
 	// Spatialiser chaque canal indépendamment sur 12 HP
-	left = PanAz.ar(12, sig[0], pos0, 1.0, width, orientation);
-	right = PanAz.ar(12, sig[1], pos1, 1.0, width, orientation);
+	sig = [
+		sig[0],     // Enceinte 0 (canal gauche)
+		sig[0],     // Enceinte 1 (canal gauche)
+		sig[0],     // Enceinte 2 (canal gauche)
+		sig[0],     // Enceinte 3 (canal gauche)
+		sig[0],     // Enceinte 4 (canal gauche)
+		sig[1],     // Enceinte 5 (canal gauche)
+		sig[1],     // Enceinte 6 (canal gauche)
+		sig[1],     // Enceinte 7 (canal gauche)
+		sig[1],     // Enceinte 8 (canal gauche)
+		sig[1],    // Enceinte 9 (canal droit)
+		sig[1],   // Enceinte 10 (canal droit)
+		sig[0]    // Enceinte 11 (canal droit)
+	];
+	//right = PanAz.ar(12, sig[1], pos1, 1.0, width, orientation);
 
 	// Mixer les deux spatialisations
-	spatSig = left + right;
-	spatSig = spatSig * amp.dbamp;
+	// spatSig = left + right;
+	sig = sig * amp.dbamp;
 
-	Out.ar(out, spatSig);
+	Out.ar(out, sig);
 }).add;
 
 // Spatialisateur stéréo acousmonium avec routage manuel par enceinte

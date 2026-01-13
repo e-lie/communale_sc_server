@@ -89,7 +89,7 @@
 			jeu1Synth = Synth(\sample_player_mono, [
 				\buf, leBuf,
 				\amp, -3,
-				\out, ~bus[\popup_samples],
+				\out, ~bus[\mirror_samples],
 				\rate, rate,
 				\kill, retrig
 			], ~mainGrp);
@@ -149,6 +149,55 @@
 	}, '/words');
 
 	"OSC event handlers initialized (/word)".postln;
+
+
+	// -----________--------_______--------_
+	// JEU CURSED --
+	// -----________--------_______--------_
+
+	OSCdef(\cursed, {
+		arg msg, time, addr, recvPort;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
+
+		// Parse OSC arguments with defaults
+		// Concaténer "cursed_" avec msg[1] pour former le nom du dossier
+		sampleDir = ("cursed_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
+
+		// Vérifier si le dossier existe dans ~buffers
+		if (~buffers[sampleDir].notNil, {
+			// Obtenir le nombre de samples dans ce dossier
+			numSamples = ~buffers[sampleDir].size;
+
+			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
+			sampleIndex = msg[2] ? numSamples.rand;
+			retrig = msg[3] ? 0;
+			rate = msg[4] ? 1;
+
+			// Récupérer le buffer
+			leBuf = ~buffers[sampleDir][sampleIndex];
+
+			~adel.sendMsg("/cursed", msg[0], msg[1], msg[2], msg[3], msg[4]);
+
+			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
+				sampleDir, sampleIndex, numSamples, retrig, rate
+			).postln;
+
+			// Créer le synth
+			jeu1Synth = Synth(\sample_player_mono, [
+				\buf, leBuf,
+				\amp, -3,
+				\out, ~bus[\cursed_samples],
+				\rate, rate,
+				\kill, retrig
+			], ~mainGrp);
+
+		}, {
+			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
+		});
+
+	}, '/cursed');
+
+	"OSC event handlers initialized (/cursed)".postln;
 
 
 	// -----________--------_______--------_

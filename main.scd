@@ -51,6 +51,10 @@ s.waitForBoot({
 
 ~test = Synth(\test, [\out, ~bus[\master_multichannel], \amp, -25]);
 ~test.set(\amp, -25);
+~test.free
+
+~buf = Buffer.read(s, "/home/elie/Bureau/communale_sc_server/samples/multichannel_bs/rec_multichannel_pulsar_stems_pattern_1.ogg");
+~multi_bo = Synth(\sample_player_multichannel, [\buf, ~buf, \amp, -25, \out, ~bus[\master_multichannel]]);
 
 ///
 
