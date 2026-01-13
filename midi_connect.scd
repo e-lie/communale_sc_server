@@ -118,13 +118,23 @@
 	// ===== INPUT STEREO POS0 (LEFT) - CC 13 =====
 	MIDIdef.cc(\inputStereoPos0, {
 		arg val, num, chan, src;
-		var posVal;
+		var posVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
 		posVal = val.linlin(0, 127, 0, 2);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour la position du canal gauche
 		~spat_input_stereo.set(\pos0, posVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiPosLeftSlider.notNil, {
+			{
+				~guiPosLeftSlider.value = sliderVal;
+				~guiPosLeftLabel.string = posVal.round(0.01).asString;
+				~guiPosLeftNumBox.value = posVal;
+			}.defer;
+		});
 
 	}, 13); // CC number 13
 
@@ -133,13 +143,23 @@
 	// ===== INPUT STEREO POS1 (RIGHT) - CC 29 =====
 	MIDIdef.cc(\inputStereoPos1, {
 		arg val, num, chan, src;
-		var posVal;
+		var posVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
 		posVal = val.linlin(0, 127, 0, 2);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour la position du canal droit
 		~spat_input_stereo.set(\pos1, posVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiPosRightSlider.notNil, {
+			{
+				~guiPosRightSlider.value = sliderVal;
+				~guiPosRightLabel.string = posVal.round(0.01).asString;
+				~guiPosRightNumBox.value = posVal;
+			}.defer;
+		});
 
 	}, 29); // CC number 29
 
@@ -148,13 +168,23 @@
 	// ===== INPUT BAYA POS - CC 35 =====
 	MIDIdef.cc(\inputBayaPos, {
 		arg val, num, chan, src;
-		var posVal;
+		var posVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en position PanAz (0 à 2)
 		posVal = val.linlin(0, 127, 0, 2);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour la position baya
 		~spat_baya.set(\pos, posVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiBayaPosSlider.notNil, {
+			{
+				~guiBayaPosSlider.value = sliderVal;
+				~guiBayaPosLabel.string = posVal.round(0.01).asString;
+				~guiBayaPosNumBox.value = posVal;
+			}.defer;
+		});
 
 	}, 35); // CC number 35
 
@@ -163,11 +193,12 @@
 	// ===== INPUT STEREO CROSSFADE - CC 49 =====
 	MIDIdef.cc(\inputStereoCrossfade, {
 		arg val, num, chan, src;
-		var amp1, amp2, crossfade;
+		var amp1, amp2, crossfade, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en crossfade (0.0 à 1.0)
 		// 0 = chaîne initiale, 63 = mix 50/50, 127 = acousmonium
 		crossfade = val.linlin(0, 127, 0.0, 1.0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Calculer les amplitudes avec un crossfade de puissance égale
 		// chaîne initiale: pleine amplitude à 0, silence à 127
@@ -179,6 +210,15 @@
 		~spat_input_stereo.set(\amp, amp1);
 		~spat_input_stereo_acousmonium.set(\amp, amp2);
 
+		// Mettre à jour le GUI si il existe
+		if (~guiCrossfadeSlider.notNil, {
+			{
+				~guiCrossfadeSlider.value = sliderVal;
+				~guiCrossfadeLabel.string = crossfade.round(0.01).asString;
+				~guiCrossfadeNumBox.value = crossfade;
+			}.defer;
+		});
+
 	}, 49); // CC number 49
 
 	"MIDI: CC 49 mapped to Input Stereo Crossfade (0=initial, 63=mix, 127=acousmonium)".postln;
@@ -186,14 +226,24 @@
 	// ===== ACOUSMONIUM HP 0 & 11 - CC 77 =====
 	MIDIdef.cc(\acousmoniumHP0_11, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes 0 (left->HP0) et 11 (right->HP11)
 		~spat_input_stereo_acousmonium.set(\hp0_1, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp11_12, dbVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP0_11Slider.notNil, {
+			{
+				~guiAcousHP0_11Slider.value = sliderVal;
+				~guiAcousHP0_11Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP0_11NumBox.value = dbVal;
+			}.defer;
+		});
 
 	}, 77); // CC number 77
 
@@ -202,10 +252,11 @@
 	// ===== ACOUSMONIUM HP 1, 2, 9, 10 - CC 78 =====
 	MIDIdef.cc(\acousmoniumHP1_2_9_10, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 1 et 2
@@ -215,6 +266,15 @@
 		~spat_input_stereo_acousmonium.set(\hp9_10, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp10_11, dbVal);
 
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP1_2_9_10Slider.notNil, {
+			{
+				~guiAcousHP1_2_9_10Slider.value = sliderVal;
+				~guiAcousHP1_2_9_10Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP1_2_9_10NumBox.value = dbVal;
+			}.defer;
+		});
+
 	}, 78); // CC number 78
 
 	"MIDI: CC 78 mapped to Acousmonium HP 1, 2, 9, 10 (-50dB to 0dB)".postln;
@@ -222,10 +282,11 @@
 	// ===== ACOUSMONIUM HP 3, 4, 7, 8 - CC 79 =====
 	MIDIdef.cc(\acousmoniumHP3_4_7_8, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 3 et 4
@@ -235,6 +296,15 @@
 		~spat_input_stereo_acousmonium.set(\hp7_8, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp8_9, dbVal);
 
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP3_4_7_8Slider.notNil, {
+			{
+				~guiAcousHP3_4_7_8Slider.value = sliderVal;
+				~guiAcousHP3_4_7_8Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP3_4_7_8NumBox.value = dbVal;
+			}.defer;
+		});
+
 	}, 79); // CC number 79
 
 	"MIDI: CC 79 mapped to Acousmonium HP 3, 4, 7, 8 (-50dB to 0dB)".postln;
@@ -242,16 +312,26 @@
 	// ===== ACOUSMONIUM HP 5, 6 - CC 80 =====
 	MIDIdef.cc(\acousmoniumHP5_6, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 5
 		~spat_input_stereo_acousmonium.set(\hp5_6, dbVal);
 		// Canal 1 (right) -> HP 6
 		~spat_input_stereo_acousmonium.set(\hp6_7, dbVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP5_6Slider.notNil, {
+			{
+				~guiAcousHP5_6Slider.value = sliderVal;
+				~guiAcousHP5_6Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP5_6NumBox.value = dbVal;
+			}.defer;
+		});
 
 	}, 80); // CC number 80
 
@@ -260,10 +340,11 @@
 	// ===== ACOUSMONIUM HP 0-1-2, 3-4-5 - CC 81 =====
 	MIDIdef.cc(\acousmoniumHP0_1_2_3_4_5, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 0, 1, 2
@@ -275,6 +356,15 @@
 		~spat_input_stereo_acousmonium.set(\hp4_5, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp5_6, dbVal);
 
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP0_1_2_3_4_5Slider.notNil, {
+			{
+				~guiAcousHP0_1_2_3_4_5Slider.value = sliderVal;
+				~guiAcousHP0_1_2_3_4_5Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP0_1_2_3_4_5NumBox.value = dbVal;
+			}.defer;
+		});
+
 	}, 81); // CC number 81
 
 	"MIDI: CC 81 mapped to Acousmonium HP 0-1-2 (left), 3-4-5 (right) (-50dB to 0dB)".postln;
@@ -282,10 +372,11 @@
 	// ===== ACOUSMONIUM HP 11-10-9, 8-7-6 - CC 82 =====
 	MIDIdef.cc(\acousmoniumHP11_10_9_8_7_6, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 11, 10, 9
@@ -297,6 +388,15 @@
 		~spat_input_stereo_acousmonium.set(\hp7_8, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp6_7, dbVal);
 
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP11_10_9_8_7_6Slider.notNil, {
+			{
+				~guiAcousHP11_10_9_8_7_6Slider.value = sliderVal;
+				~guiAcousHP11_10_9_8_7_6Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP11_10_9_8_7_6NumBox.value = dbVal;
+			}.defer;
+		});
+
 	}, 82); // CC number 82
 
 	"MIDI: CC 82 mapped to Acousmonium HP 11-10-9 (left), 8-7-6 (right) (-50dB to 0dB)".postln;
@@ -304,10 +404,11 @@
 	// ===== ACOUSMONIUM HP 0-5, 6-11 - CC 83 =====
 	MIDIdef.cc(\acousmoniumHP0_5_6_11, {
 		arg val, num, chan, src;
-		var dbVal;
+		var dbVal, sliderVal;
 
 		// Convertir la valeur MIDI (0-127) en dB (-50 à 0)
 		dbVal = val.linlin(0, 127, -50, 0);
+		sliderVal = val.linlin(0, 127, 0, 1);
 
 		// Mettre à jour les enceintes:
 		// Canal 0 (left) -> HP 0 à 5
@@ -324,6 +425,15 @@
 		~spat_input_stereo_acousmonium.set(\hp9_10, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp10_11, dbVal);
 		~spat_input_stereo_acousmonium.set(\hp11_12, dbVal);
+
+		// Mettre à jour le GUI si il existe
+		if (~guiAcousHP0_5_6_11Slider.notNil, {
+			{
+				~guiAcousHP0_5_6_11Slider.value = sliderVal;
+				~guiAcousHP0_5_6_11Label.string = dbVal.round(0.1).asString ++ "dB";
+				~guiAcousHP0_5_6_11NumBox.value = dbVal;
+			}.defer;
+		});
 
 	}, 83); // CC number 83
 

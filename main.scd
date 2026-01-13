@@ -48,6 +48,10 @@ s.waitForBoot({
 });
 )
 
+
+~test = Synth(\test, [\out, ~bus[\master_multichannel], \amp, -25]);
+~test.set(\amp, -25);
+
 ///
 
 s.record(numChannels:12);

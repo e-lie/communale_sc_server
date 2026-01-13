@@ -30,6 +30,15 @@ SynthDef(\alarm, {
 	Out.ar(out,sig);
 }).add;
 
+
+SynthDef(\test, {
+	arg amp=(-5), out=0;
+	var sig;
+
+	sig = PinkNoise.ar(0.3)!12 * amp.dbamp;
+
+	Out.ar(out,sig);
+}).add;
 // ===== SAMPLE PLAYERS =====
 
 //lecteur sample jeux vidéos mono
