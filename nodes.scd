@@ -10,7 +10,7 @@
 			\spat_mono,
 			[
 				\amp, 0,
-				\bus, ~bus[\jeu_1_samples],
+				\bus, ~bus[\popup_samples],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp
@@ -20,7 +20,7 @@
 			\spat_mono,
 			[
 				\amp, 0,
-				\bus, ~bus[\jeu_2_samples],
+				\bus, ~bus[\mirror_samples],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp
@@ -30,7 +30,7 @@
 			\spat_mono,
 			[
 				\amp, 0,
-				\bus, ~bus[\jeu_3_samples],
+				\bus, ~bus[\words_samples],
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp

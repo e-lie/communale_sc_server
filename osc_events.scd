@@ -35,7 +35,7 @@
 			jeu1Synth = Synth(\sample_player_mono, [
 				\buf, leBuf,
 				\amp, -3,
-				\out, ~bus[\jeu_1_samples],
+				\out, ~bus[\popup_samples],
 				\rate, rate,
 				\kill, retrig
 			], ~mainGrp);
@@ -47,6 +47,48 @@
 	}, '/popup');
 
 	"OSC event handlers initialized (/popup)".postln;
+
+	OSCdef(\words, {
+		arg msg, time, addr, recvPort;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
+
+		// Parse OSC arguments with defaults
+		// Concaténer "popup_" avec msg[1] pour former le nom du dossier
+		sampleDir = ("words_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
+
+		// Vérifier si le dossier existe dans ~buffers
+		if (~buffers[sampleDir].notNil, {
+			// Obtenir le nombre de samples dans ce dossier
+			numSamples = ~buffers[sampleDir].size;
+
+			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
+			sampleIndex = msg[2] ? numSamples.rand;
+			retrig = msg[3] ? 0;
+			rate = msg[4] ? 1;
+
+			// Récupérer le buffer
+			leBuf = ~buffers[sampleDir][sampleIndex];
+
+			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
+				sampleDir, sampleIndex, numSamples, retrig, rate
+			).postln;
+
+			// Créer le synth
+			jeu1Synth = Synth(\sample_player_mono, [
+				\buf, leBuf,
+				\amp, -3,
+				\out, ~bus[\words_samples],
+				\rate, rate,
+				\kill, retrig
+			], ~mainGrp);
+
+		}, {
+			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
+		});
+
+	}, '/words');
+
+	"OSC event handlers initialized (/word)".postln;
 
 	// -----________--------_______--------_
 	// JEU 2 --
@@ -83,7 +125,7 @@
 			jeu1Synth = Synth(\sample_player_mono, [
 				\buf, leBuf,
 				\amp, -3,
-				\out, ~bus[\jeu_1_samples],
+				\out, ~bus[\popup_samples],
 				\rate, rate,
 				\kill, retrig
 			], ~mainGrp);
@@ -120,7 +162,7 @@
 		jeu1Synth = Synth(\le_player, [
 			\buf, leBuf,
 			\amp, -3,
-			\out, ~bus[\jeu_3_samples],
+			\out, ~bus[\words_samples],
 			\rate, rate,
 			\kill, retrig
 		]);
