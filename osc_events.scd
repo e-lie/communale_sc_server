@@ -27,6 +27,8 @@
 			// Récupérer le buffer
 			leBuf = ~buffers[sampleDir][sampleIndex];
 
+			~adel.sendMsg("/popup", msg[0], msg[1], msg[2], msg[3], msg[4]);
+
 			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
 				sampleDir, sampleIndex, numSamples, retrig, rate
 			).postln;
@@ -48,47 +50,6 @@
 
 	"OSC event handlers initialized (/popup)".postln;
 
-	OSCdef(\words, {
-		arg msg, time, addr, recvPort;
-		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
-
-		// Parse OSC arguments with defaults
-		// Concaténer "popup_" avec msg[1] pour former le nom du dossier
-		sampleDir = ("words_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
-
-		// Vérifier si le dossier existe dans ~buffers
-		if (~buffers[sampleDir].notNil, {
-			// Obtenir le nombre de samples dans ce dossier
-			numSamples = ~buffers[sampleDir].size;
-
-			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
-			sampleIndex = msg[2] ? numSamples.rand;
-			retrig = msg[3] ? 0;
-			rate = msg[4] ? 1;
-
-			// Récupérer le buffer
-			leBuf = ~buffers[sampleDir][sampleIndex];
-
-			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
-				sampleDir, sampleIndex, numSamples, retrig, rate
-			).postln;
-
-			// Créer le synth
-			jeu1Synth = Synth(\sample_player_mono, [
-				\buf, leBuf,
-				\amp, -3,
-				\out, ~bus[\words_samples],
-				\rate, rate,
-				\kill, retrig
-			], ~mainGrp);
-
-		}, {
-			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
-		});
-
-	}, '/words');
-
-	"OSC event handlers initialized (/word)".postln;
 
 	// -----________--------_______--------_
 	// JEU 2 --
@@ -121,6 +82,9 @@
 				sampleDir, sampleIndex, numSamples, retrig, rate
 			).postln;
 
+			// if (msg[1] == "crash", {
+			~adel.sendMsg("/mirror", msg[0], msg[1], msg[2], msg[3], msg[4]);
+
 			// Créer le synth
 			jeu1Synth = Synth(\sample_player_mono, [
 				\buf, leBuf,
@@ -142,36 +106,50 @@
 	// JEU 3 --
 	// -----________--------_______--------_
 
-	OSCdef(\jeu_3_buf_trig, {
+	OSCdef(\words, {
 		arg msg, time, addr, recvPort;
-		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, sampleName;
+		var sampleDir, sampleIndex, retrig, rate, leBuf, jeu1Synth, numSamples;
 
 		// Parse OSC arguments with defaults
-		sampleDir = msg[1];
-		sampleIndex = msg[2] ? 0;
-		retrig = msg[3] ? 0;
-		rate = msg[4] ? 1;
+		// Concaténer "popup_" avec msg[1] pour former le nom du dossier
+		sampleDir = ("words_" ++ msg[1]).asSymbol;  // Convertir en Symbol pour l'accès au dictionnaire
 
-		leBuf = ~buffers[sampleDir][sampleIndex];
+		// Vérifier si le dossier existe dans ~buffers
+		if (~buffers[sampleDir].notNil, {
+			// Obtenir le nombre de samples dans ce dossier
+			numSamples = ~buffers[sampleDir].size;
 
-		"Sample player triggered: sampleDir=% sampleIndex=% retrig=%".format(
-			sampleDir, sampleIndex, retrig
-		).postln;
+			// Si msg[2] est fourni, l'utiliser, sinon prendre un index aléatoire
+			sampleIndex = msg[2] ? numSamples.rand;
+			retrig = msg[3] ? 0;
+			rate = msg[4] ? 1;
 
-		// Create the synth
-		jeu1Synth = Synth(\le_player, [
-			\buf, leBuf,
-			\amp, -3,
-			\out, ~bus[\words_samples],
-			\rate, rate,
-			\kill, retrig
-		]);
+			// Récupérer le buffer
+			leBuf = ~buffers[sampleDir][sampleIndex];
 
+			~adel.sendMsg("/words", msg[0], msg[1], msg[2], msg[3], msg[4]);
 
+			"Sample player triggered: sampleDir=% sampleIndex=% (of %) retrig=% rate=%".format(
+				sampleDir, sampleIndex, numSamples, retrig, rate
+			).postln;
 
-	}, '/jeu3_buf_trig');
+			// Créer le synth
+			jeu1Synth = Synth(\sample_player_mono, [
+				\buf, leBuf,
+				\amp, -3,
+				\out, ~bus[\words_samples],
+				\rate, rate,
+				\kill, retrig
+			], ~mainGrp);
 
-	"OSC event handlers initialized (/jeu3)".postln;
+		}, {
+			"Error: Sample directory '%' not found in buffers!".format(sampleDir).postln;
+		});
+
+	}, '/words');
+
+	"OSC event handlers initialized (/word)".postln;
+
 
 	// -----________--------_______--------_
 	// ALARM --
@@ -206,27 +184,6 @@
 
 	"OSC event handlers initialized (/alarm)".postln;
 
-	// ===== INPUT STEREO OSC HANDLER =====
-	OSCdef(\inputStereoControl, {
-		arg msg, time, addr, recvPort;
-		var amp, inBus, pos;
-
-		// Parse OSC arguments
-		amp = msg[1] ? 0;
-		inBus = msg[2] ? 0;
-		pos = msg[3] ? 0;
-
-		// Mettre à jour le synth d'input
-		~input_stereo_synth.set(\amp, amp, \inBus, inBus);
-
-		// Mettre à jour la spatialisation
-		~spat_input_stereo.set(\amp, amp, \pos, pos);
-
-		"Input Stereo: amp=% inBus=% pos=%".format(amp, inBus, pos).postln;
-
-	}, '/input_stereo');
-
-	"OSC event handlers initialized (/input_stereo)".postln;
 };
 
 // ~makeEvents.print;

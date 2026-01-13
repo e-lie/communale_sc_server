@@ -97,12 +97,12 @@
 
 		// ===== INPUT BAYA SYNTHS =====
 
-		// Input baya stereo (hardware inputs 14-15)
+		// Input baya mono (hardware input 15)
 		~input_baya_synth = Synth.new(
-			\audio_in_baya_stereo,
+			\audio_in_baya_mono,
 			[
 				\amp, 0,
-				\inBus, 14,  // Hardware input bus (canaux 14-15)
+				\inBus, 15,
 				\out, ~bus[\input_baya]
 			],
 			~mainGrp

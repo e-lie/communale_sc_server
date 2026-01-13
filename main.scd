@@ -2,6 +2,7 @@
 // ===== CONFIGURATION =====
 // Port OSC pour la réception des messages (par défaut: 57120)
 ~oscPort = 4646;  // Changez cette valeur pour utiliser un autre port
+~adel = NetAddr.new("192.168.1.4", 4646);    // create the NetAddr
 
 // Load modules
 "sample_loader.scd".loadRelative;

@@ -174,14 +174,14 @@ SynthDef(\audio_in_stereo, {
 }).add;
 
 // Entrée audio baya stéréo (inputs 14-15) -> bus mono
-SynthDef(\audio_in_baya_stereo, {
+SynthDef(\audio_in_baya_mono, {
 	arg out=0, amp=0, inBus=15;
-	var sig, mono;
+	var sig;
 
 	sig = SoundIn.ar(inBus);
-	mono = sig * amp.dbamp;
+	sig = sig * amp.dbamp;
 
-	Out.ar(out, mono);
+	Out.ar(out, sig);
 }).add;
 
 // Spatialisateur mono pour baya avec PanAz
