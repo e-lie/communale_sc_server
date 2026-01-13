@@ -175,13 +175,11 @@ SynthDef(\audio_in_stereo, {
 
 // Entrée audio baya stéréo (inputs 14-15) -> bus mono
 SynthDef(\audio_in_baya_stereo, {
-	arg out=0, amp=0, inBus=14;
+	arg out=0, amp=0, inBus=15;
 	var sig, mono;
 
-	sig = SoundIn.ar([inBus, inBus+1]);
-	// Somme stéréo en mono
-	mono = (sig[0] + sig[1]) * 0.5;
-	mono = mono * amp.dbamp;
+	sig = SoundIn.ar(inBus);
+	mono = sig * amp.dbamp;
 
 	Out.ar(out, mono);
 }).add;
@@ -238,6 +236,9 @@ SynthDef(\master_multichannel, {
 	sub4 = LPF.ar(sub4,cross);
 
 	sig = HPF.ar(sig, cross);
+
+	// ajout d'un effet
+
 	sig = sig ++ sub1 ++ sub2 ++ sub3 ++ sub4;
 
 	sig = sig * amp.dbamp.lag(1);
