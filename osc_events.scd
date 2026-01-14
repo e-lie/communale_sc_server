@@ -150,7 +150,6 @@
 
 	"OSC event handlers initialized (/word)".postln;
 
-
 	// -----________--------_______--------_
 	// JEU CURSED --
 	// -----________--------_______--------_
@@ -198,6 +197,24 @@
 	}, '/cursed');
 
 	"OSC event handlers initialized (/cursed)".postln;
+
+
+	// -----________--------_______--------_
+	// les mots de baya --
+	// -----________--------_______--------_
+
+	OSCdef(\lesmotsdebaya, {
+		arg msg, time, addr, recvPort;
+		var pos;
+
+		pos = msg[0];
+
+		~spat_baya.set(\pos, pos);
+
+	}, '/lesmots');
+
+	"OSC event handlers initialized (/lesmots)".postln;
+
 
 
 	// -----________--------_______--------_
