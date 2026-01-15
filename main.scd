@@ -48,6 +48,7 @@ s.waitForBoot({
 });
 )
 
+// test dépot git pour avancer
 
 ~test = Synth(\test, [\out, ~bus[\master_multichannel], \amp, -25]);
 ~test.set(\amp, -25);
