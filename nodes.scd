@@ -130,6 +130,7 @@
 			[
 				\amp, 0,      // Commence à 0dB
 				\pos, 0,      // Position initiale (0-2)
+				\width, 1.499,
 				\bus, ~bus[\input_baya],
 				\out, ~bus[\master_multichannel]
 			],
