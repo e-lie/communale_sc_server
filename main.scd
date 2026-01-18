@@ -39,7 +39,7 @@ s.waitForBoot({
 	~connect_midi_devices.value;
 
 	// Create GUI
-	~makeGUI.value;
+	// ~makeGUI.value;
 
 	"=== Communale SC Server ready ===".postln;
 	//"OSC handlers: /popup, /alarm, /input_stereo, /input_quad, /input_octo".postln;
@@ -56,6 +56,8 @@ s.waitForBoot({
 
 ~auto = NetAddr.new("127.0.0.1", 57120);
 ~auto.sendMsg(\levier, rrand(-1.0,1.0).postln);
+~auto.sendMsg(\bouton, rrand(-1.0,1.0).postln);
+~master_multichannel.set(\fxon, 1);
 
 OSCFunc.trace(false);
 

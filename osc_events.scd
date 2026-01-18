@@ -100,7 +100,7 @@
 
 	}, '/mirror');
 
-	"OSC event handlers initialized (/popup)".postln;
+	"OSC event handlers initialized (/mirror)".postln;
 
 	// -----________--------_______--------_
 	// JEU 3 --
@@ -148,7 +148,7 @@
 
 	}, '/words');
 
-	"OSC event handlers initialized (/word)".postln;
+	"OSC event handlers initialized (/words)".postln;
 
 	// -----________--------_______--------_
 	// JEU CURSED --
@@ -228,7 +228,7 @@
 		// Create the synth
 		virgule = Routine{
 			var atk=0.25, rel=12, freq=440, rate=1;
-			~spat = Synth(\alarm, [\amp, -30, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
+			~spat = Synth(\alarm, [\amp, -15, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
 			(atk*2).wait;
 			~spat.set(\freq, freq/2);
 			~spat.set(\rate, rate/2);
@@ -246,9 +246,10 @@
 			}
 		}.play;
 
-	}, '/alarm');
+	}, '/bouton');
 
-	"OSC event handlers initialized (/alarm)".postln;
+
+	"OSC event handlers initialized (/bouton)".postln;
 
 	// -----________--------_______--------_
 	// LEVIER -- levier principale -- basculement du décor
@@ -269,8 +270,8 @@
 			\amp, -3,
 			\out, ~bus[\popup_samples],
 			\rate, rrand(0.5, 1.8),
-			\atk, 0.001,
-			\rel, rrand(0.05,0.15),
+			\atk, 0.01,
+			\rel, rrand(0.05,0.2),
 			\loop, 1,
 			\kill, 1
 		], ~mainGrp);
@@ -280,8 +281,8 @@
 			\amp, -3,
 			\out, ~bus[\mirror_samples],
 			\rate, rrand(0.5, 1.8),
-			\atk, 0.001,
-			\rel, rrand(0.05,0.15),
+			\atk, 0.01,
+			\rel, rrand(0.05,0.2),
 			\loop, 1,
 			\kill, 1
 		], ~mainGrp);
@@ -291,8 +292,8 @@
 			\amp, -3,
 			\out, ~bus[\words_samples],
 			\rate, rrand(0.5, 1.3),
-			\atk, 0.001,
-			\rel, rrand(0.05,0.15),
+			\atk, 0.01,
+			\rel, rrand(0.05,0.2),
 			\loop, 1,
 			\kill, 1
 		], ~mainGrp);
@@ -302,8 +303,8 @@
 			\amp, -3,
 			\out, ~bus[\cursed_samples],
 			\rate, rrand(0.5, 1.2),
-			\atk, 0.001,
-			\rel, rrand(0.05,0.15),
+			\atk, 0.01,
+			\rel, rrand(0.05,0.2),
 			\loop, 1,
 			\kill, 1
 		], ~mainGrp);

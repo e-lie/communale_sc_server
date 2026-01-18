@@ -43,10 +43,10 @@ SynthDef(\test, {
 
 //lecteur sample jeux vidéos mono
 SynthDef(\sample_player_mono, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2, loop=0;
+	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2, loop=0, atk=0.001;
 	var sig, envout;
 
-	envout = EnvGen.kr(Env([1, 0], [rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
+	envout = EnvGen.kr(Env([0, 1, 0], [atk, rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
 	sig = PlayBuf.ar(1, buf, rate, loop:loop, doneAction:2);
 	sig = sig * envout;
 	sig = sig * amp.dbamp;
@@ -238,8 +238,8 @@ SynthDef(\audio_in_multichannel, {
 // CF shema d'implémentation
 
 SynthDef(\master_multichannel, {
-	arg bus, out=0, amp=0, cross=120;
-	var sig, sub1, sub2, sub3, sub4;
+	arg bus, out=0, amp=0, cross=120, fxon = 0;
+	var sig, sub1, sub2, sub3, sub4, fx;
 
 	sig = In.ar(bus, 12);
 	// filtrage des subs en groupant des enceintes entre elles
@@ -260,7 +260,13 @@ SynthDef(\master_multichannel, {
 	sig = HPF.ar(sig, cross);
 
 	// ajout d'un effet
+	// fx = Decimator.ar(sig, 48000, 16);
+	fx = CombC.ar(sig, 0.125, LFNoise2.ar(0.89).linlin(-1,1,0.01,0.75), 1, 0.8);
+	fx = fx + DelayN.ar(CombC.ar(fx, 1,0.075*4, 1, 0.8), 0.2, 0.1);
+	fx = GlitchBRF.ar(fx, LFNoise2.ar(1.5).linlin(-1,1,250,5000), 0.05);
 
+
+	sig = sig + (fx * fxon.lag(0.99));
 	sig = sig ++ sub1 ++ sub2 ++ sub3 ++ sub4;
 
 	sig = sig * amp.dbamp.lag(1);
