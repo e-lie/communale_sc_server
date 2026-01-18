@@ -228,6 +228,7 @@
 		// Create the synth
 		virgule = Routine{
 			var atk=0.25, rel=12, freq=440, rate=1;
+			~master_multichannel.set(\fxon, 1);
 			~spat = Synth(\alarm, [\amp, -15, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
 			(atk*2).wait;
 			~spat.set(\freq, freq/2);
@@ -243,6 +244,7 @@
 				~spat.set(\freq, freq * i);
 
 				0.2.wait;
+				~master_multichannel.set(\fxon, 0);
 			}
 		}.play;
 
@@ -260,54 +262,68 @@
 		var virgule, panic_popup, panic_mirror, panic_words, panic_cursed;
 
 		// déplacement simple dans l'espace des réaction des jeux
-		~spat_jeu_1.set(\pos, posPopup + msg[1]);
-		~spat_jeu_2.set(\pos, posMirror + msg[1]);
-		~spat_jeu_3.set(\pos, posWords + msg[1]);
-		~spat_jeu_cursed.set(\pos, posCursed + msg[1]);
+		~levier_routine = Routine{
 
-		panic_popup = Synth(\sample_player_mono, [
-			\buf, ~buffers[\panic][(0..4).choose],
-			\amp, -3,
-			\out, ~bus[\popup_samples],
-			\rate, rrand(0.5, 1.8),
-			\atk, 0.01,
-			\rel, rrand(0.05,0.2),
-			\loop, 1,
-			\kill, 1
-		], ~mainGrp);
+			~master_multichannel.set(\fxon, 1);
+			~spat_jeu_1.set(\pos, posPopup + msg[1]);
+			~spat_jeu_2.set(\pos, posMirror + msg[1]);
+			~spat_jeu_3.set(\pos, posWords + msg[1]);
+			~spat_jeu_cursed.set(\pos, posCursed + msg[1]);
 
-		panic_mirror = Synth(\sample_player_mono, [
-			\buf, ~buffers[\panic][(0..4).choose],
-			\amp, -3,
-			\out, ~bus[\mirror_samples],
-			\rate, rrand(0.5, 1.8),
-			\atk, 0.01,
-			\rel, rrand(0.05,0.2),
-			\loop, 1,
-			\kill, 1
-		], ~mainGrp);
+			panic_popup = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\popup_samples],
+				\rate, rrand(1.5, 3),
+				\atk, 0.01,
+				\rel, rrand(0.05,0.2),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
 
-		panic_words = Synth(\sample_player_mono, [
-			\buf, ~buffers[\panic][(0..4).choose],
-			\amp, -3,
-			\out, ~bus[\words_samples],
-			\rate, rrand(0.5, 1.3),
-			\atk, 0.01,
-			\rel, rrand(0.05,0.2),
-			\loop, 1,
-			\kill, 1
-		], ~mainGrp);
+			panic_mirror = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\mirror_samples],
+				\rate, rrand(1.5, 3),
+				\atk, 0.01,
+				\rel, rrand(0.05,0.2),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
 
-		panic_cursed = Synth(\sample_player_mono, [
-			\buf, ~buffers[\panic][(0..4).choose],
-			\amp, -3,
-			\out, ~bus[\cursed_samples],
-			\rate, rrand(0.5, 1.2),
-			\atk, 0.01,
-			\rel, rrand(0.05,0.2),
-			\loop, 1,
-			\kill, 1
-		], ~mainGrp);
+			panic_words = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\words_samples],
+				\rate, rrand(1.2, 5),
+				\atk, 0.01,
+				\rel, rrand(0.05,0.2),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
+
+			panic_cursed = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\cursed_samples],
+				\rate, rrand(1.5, 4),
+				\atk, 0.01,
+				\rel, rrand(0.05,0.2),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
+
+			0.5.wait;
+
+			~spat_jeu_1.set(\pos, posPopup);
+			~spat_jeu_2.set(\pos, posMirror);
+			~spat_jeu_3.set(\pos, posWords);
+			~spat_jeu_cursed.set(\pos, posCursed);
+
+			~master_multichannel.set(\fxon, 0);
+
+		}.play;
 
 	}, '/levier');
 
