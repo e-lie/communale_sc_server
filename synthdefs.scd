@@ -70,10 +70,10 @@ SynthDef(\sample_player_stereo, {
 
 // lecteur bande son multichannel
 SynthDef(\sample_player_multichannel, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0;
+	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2;
 	var sig, envout;
 
-	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
+	envout = EnvGen.kr(Env([1, 0], [rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
 	sig = PlayBuf.ar(12, buf, rate, doneAction:2);
 	sig = sig * envout;
 	sig = sig * amp.dbamp;
@@ -261,7 +261,7 @@ SynthDef(\master_multichannel, {
 	// ajout d'un effet
 	// fx = Decimator.ar(sig, 48000, 16);
 	fx = CombC.ar(sig, 0.125, LFNoise2.ar(0.89).linlin(-1,1,0.01,0.75), 1, 0.8);
-	fx = fx + DelayN.ar(CombC.ar(fx, 1,0.075*4, 1, 0.8), 0.2, 0.1);
+	fx = fx + DelayN.ar(CombC.ar(fx, 1,0.075*LFNoise0.ar(0.25).linlin(-1,1,2.0,4.0), 1, 0.8), 0.2, 0.1);
 	fx = GlitchBRF.ar(fx, LFNoise2.ar(1.5).linlin(-1,1,250,5000), 0.05);
 
 

@@ -223,13 +223,15 @@
 
 	OSCdef(\alarm, {
 		arg msg, time, addr, recvPort;
-		var virgule;
+		var virgule, glitchy;
 
 		// Create the synth
+		~glitter = Synth(\sample_player_multichannel, [\buf, ~buffers[\alarm][0], \amp, -10, \rel, 4]);
+
 		virgule = Routine{
 			var atk=0.25, rel=12, freq=440, rate=1;
 			~master_multichannel.set(\fxon, 1);
-			~spat = Synth(\alarm, [\amp, -15, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
+			~spat = Synth(\alarm, [\amp, -10, \atk, atk, \rel, rel, \freq,freq, \rate, rate, \out, ~bus[\master_multichannel]]);
 			(atk*2).wait;
 			~spat.set(\freq, freq/2);
 			~spat.set(\rate, rate/2);
@@ -238,14 +240,48 @@
 			0.1.wait;
 			~spat.set(\rate, rate*100);
 			(rel/12).wait;
+			~glitter.set(\kill, 1);
 			10.do{
 				arg i;
 				~spat.set(\rate, rate*(100 + (i*10)));
 				~spat.set(\freq, freq * i);
 
+				~spat_jeu_2.set(\pos, rrand(0.0,2.0));
+
+				glitchy = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\mirror_samples],
+				\rate, rrand(1.2, 5),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.05,0.1),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
 				0.2.wait;
-				~master_multichannel.set(\fxon, 0);
-			}
+			};
+
+			~master_multichannel.set(\fxon, 0);
+
+			45.do{
+				arg i;
+				glitchy = Synth(\sample_player_mono, [
+				\buf, ~buffers[\panic][(0..4).choose],
+				\amp, -3,
+				\out, ~bus[\mirror_samples],
+				\rate, rrand(1.2, 3),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.15,0.3),
+				\loop, 1,
+				\kill, 1
+			], ~mainGrp);
+
+				~spat_jeu_2.set(\pos, rrand(0.0,2.0));
+				0.05.wait
+			};
+
+			~spat_jeu_2.set(\pos,0.0);
+
 		}.play;
 
 	}, '/bouton');
@@ -264,7 +300,7 @@
 		// déplacement simple dans l'espace des réaction des jeux
 		~levier_routine = Routine{
 
-			~master_multichannel.set(\fxon, 1);
+			~master_multichannel.set(\fxon, rrand(0.3, 1.1));
 			~spat_jeu_1.set(\pos, posPopup + msg[1]);
 			~spat_jeu_2.set(\pos, posMirror + msg[1]);
 			~spat_jeu_3.set(\pos, posWords + msg[1]);
@@ -275,8 +311,8 @@
 				\amp, -3,
 				\out, ~bus[\popup_samples],
 				\rate, rrand(1.5, 3),
-				\atk, 0.01,
-				\rel, rrand(0.05,0.2),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.05,0.1),
 				\loop, 1,
 				\kill, 1
 			], ~mainGrp);
@@ -286,8 +322,8 @@
 				\amp, -3,
 				\out, ~bus[\mirror_samples],
 				\rate, rrand(1.5, 3),
-				\atk, 0.01,
-				\rel, rrand(0.05,0.2),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.05,0.1),
 				\loop, 1,
 				\kill, 1
 			], ~mainGrp);
@@ -297,8 +333,8 @@
 				\amp, -3,
 				\out, ~bus[\words_samples],
 				\rate, rrand(1.2, 5),
-				\atk, 0.01,
-				\rel, rrand(0.05,0.2),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.05,0.1),
 				\loop, 1,
 				\kill, 1
 			], ~mainGrp);
@@ -308,8 +344,8 @@
 				\amp, -3,
 				\out, ~bus[\cursed_samples],
 				\rate, rrand(1.5, 4),
-				\atk, 0.01,
-				\rel, rrand(0.05,0.2),
+				\atk, rrand(0.01,0.15),
+				\rel, rrand(0.05,0.1),
 				\loop, 1,
 				\kill, 1
 			], ~mainGrp);
