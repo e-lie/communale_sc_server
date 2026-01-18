@@ -28,7 +28,7 @@
 			],
 			~spatGrp
 		);
-
+//pos 0.9 -- jeu words
 		~spat_jeu_3 = Synth.new(
 			\spat_mono,
 			[
@@ -40,7 +40,7 @@
 			~spatGrp
 		);
 		// ~spat_jeu_3.set(\pos, 0.9);
-
+//pos 0.7
 		~spat_jeu_cursed = Synth.new(
 			\spat_mono,
 			[

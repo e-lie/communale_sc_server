@@ -218,7 +218,7 @@
 
 
 	// -----________--------_______--------_
-	// ALARM --
+	// ALARM -- main bouton -- jackpot tout part à volo
 	// -----________--------_______--------_
 
 	OSCdef(\alarm, {
@@ -250,6 +250,67 @@
 
 	"OSC event handlers initialized (/alarm)".postln;
 
+	// -----________--------_______--------_
+	// LEVIER -- levier principale -- basculement du décor
+	// -----________--------_______--------_
+
+	OSCdef(\levier, {
+		arg msg, time, addr, recvPort, posPopup = 0.35, posMirror=0.0, posWords = 0.9, posCursed = 0.7;
+		var virgule, panic_popup, panic_mirror, panic_words, panic_cursed;
+
+		// déplacement simple dans l'espace des réaction des jeux
+		~spat_jeu_1.set(\pos, posPopup + msg[1]);
+		~spat_jeu_2.set(\pos, posMirror + msg[1]);
+		~spat_jeu_3.set(\pos, posWords + msg[1]);
+		~spat_jeu_cursed.set(\pos, posCursed + msg[1]);
+
+		panic_popup = Synth(\sample_player_mono, [
+			\buf, ~buffers[\panic][(0..4).choose],
+			\amp, -3,
+			\out, ~bus[\popup_samples],
+			\rate, rrand(0.5, 1.8),
+			\atk, 0.001,
+			\rel, rrand(0.05,0.15),
+			\loop, 1,
+			\kill, 1
+		], ~mainGrp);
+
+		panic_mirror = Synth(\sample_player_mono, [
+			\buf, ~buffers[\panic][(0..4).choose],
+			\amp, -3,
+			\out, ~bus[\mirror_samples],
+			\rate, rrand(0.5, 1.8),
+			\atk, 0.001,
+			\rel, rrand(0.05,0.15),
+			\loop, 1,
+			\kill, 1
+		], ~mainGrp);
+
+		panic_words = Synth(\sample_player_mono, [
+			\buf, ~buffers[\panic][(0..4).choose],
+			\amp, -3,
+			\out, ~bus[\words_samples],
+			\rate, rrand(0.5, 1.3),
+			\atk, 0.001,
+			\rel, rrand(0.05,0.15),
+			\loop, 1,
+			\kill, 1
+		], ~mainGrp);
+
+		panic_cursed = Synth(\sample_player_mono, [
+			\buf, ~buffers[\panic][(0..4).choose],
+			\amp, -3,
+			\out, ~bus[\cursed_samples],
+			\rate, rrand(0.5, 1.2),
+			\atk, 0.001,
+			\rel, rrand(0.05,0.15),
+			\loop, 1,
+			\kill, 1
+		], ~mainGrp);
+
+	}, '/levier');
+
+	"OSC event handlers initialized (/levier)".postln;
 };
 
 // ~makeEvents.print;

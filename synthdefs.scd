@@ -43,11 +43,11 @@ SynthDef(\test, {
 
 //lecteur sample jeux vidéos mono
 SynthDef(\sample_player_mono, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0;
+	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2, loop=0;
 	var sig, envout;
 
-	envout = EnvGen.kr(Env([1, 0], [0.2], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
-	sig = PlayBuf.ar(1, buf, rate, doneAction:2);
+	envout = EnvGen.kr(Env([1, 0], [rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
+	sig = PlayBuf.ar(1, buf, rate, loop:loop, doneAction:2);
 	sig = sig * envout;
 	sig = sig * amp.dbamp;
 
