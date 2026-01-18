@@ -30,7 +30,6 @@ SynthDef(\alarm, {
 	Out.ar(out,sig);
 }).add;
 
-
 SynthDef(\test, {
 	arg amp=(-5), out=0;
 	var sig;
