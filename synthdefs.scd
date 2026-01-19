@@ -194,6 +194,28 @@ SynthDef(\audio_in_stereo, {
 	Out.ar(out, sig);
 }).add;
 
+SynthDef(\audio_in_baya_live_mono_to_stereo, {
+	arg out=0, amp=0, inBus=2;
+	var sig;
+
+	sig = SoundIn.ar(inBus);
+	sig = sig!2;
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
+SynthDef(\audio_in_baya_live_mono_to_spat, {
+	arg out=0, amp=0, inBus=3, pos=0.0, width=2.0;
+	var sig;
+
+	sig = SoundIn.ar(inBus);
+	sig = PanAz.ar(12, sig, pos.lag(1), 1, width.lag(2));
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
 // Entrée audio baya stéréo (inputs 14-15) -> bus mono
 SynthDef(\audio_in_baya_mono, {
 	arg out=0, amp=0, inBus=15;

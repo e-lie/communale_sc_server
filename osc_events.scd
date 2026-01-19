@@ -207,13 +207,31 @@
 		arg msg, time, addr, recvPort;
 		var pos;
 
-		pos = msg[0];
+		pos = msg[1];
 
 		~spat_baya.set(\pos, pos);
 
 	}, '/lesmots');
 
 	"OSC event handlers initialized (/lesmots)".postln;
+
+		// -----________--------_______--------_
+	// les mini-sons mono spatialisés pendant le live de baya
+	// -----________--------_______--------_
+
+	OSCdef(\mini_sons_baya, {
+		arg msg, time, addr, recvPort;
+		var pos, width;
+
+		pos = msg[1];
+		width = msg[2];
+
+		~input_baya_live_event_spat.set(\pos, pos);
+		~input_baya_live_event_spat.set(\width, width);
+
+	}, '/mini_sons_baya');
+
+	"OSC event handlers initialized (/mini_sons_baya)".postln;
 
 
 
@@ -301,9 +319,9 @@
 		~levier_routine = Routine{
 
 			~master_multichannel.set(\fxon, rrand(0.3, 1.1));
-			~spat_jeu_1.set(\pos, posPopup + msg[1]);
-			~spat_jeu_2.set(\pos, posMirror + msg[1]);
-			~spat_jeu_3.set(\pos, posWords + msg[1]);
+			~spat_jeu_popup.set(\pos, posPopup + msg[1]);
+			~spat_jeu_mirror.set(\pos, posMirror + msg[1]);
+			~spat_jeu_words.set(\pos, posWords + msg[1]);
 			~spat_jeu_cursed.set(\pos, posCursed + msg[1]);
 
 			panic_popup = Synth(\sample_player_mono, [
@@ -352,9 +370,9 @@
 
 			0.5.wait;
 
-			~spat_jeu_1.set(\pos, posPopup);
-			~spat_jeu_2.set(\pos, posMirror);
-			~spat_jeu_3.set(\pos, posWords);
+			~spat_jeu_popup.set(\pos, posPopup);
+			~spat_jeu_mirror.set(\pos, posMirror);
+			~spat_jeu_words.set(\pos, posWords);
 			~spat_jeu_cursed.set(\pos, posCursed);
 
 			~master_multichannel.set(\fxon, 0);

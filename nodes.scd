@@ -7,7 +7,7 @@
 		~masterGrp = Group.after(~spatGrp);
 
 // pos -- jeu popup 0.35
-		~spat_jeu_1 = Synth.new(
+		~spat_jeu_popup = Synth.new(
 			\spat_mono,
 			[
 				\amp, 0,
@@ -18,7 +18,7 @@
 			~spatGrp
 		);
 // pos 0 -- jeu mirror
-		~spat_jeu_2 = Synth.new(
+		~spat_jeu_mirror = Synth.new(
 			\spat_mono,
 			[
 				\amp, 0,
@@ -29,7 +29,7 @@
 			~spatGrp
 		);
 //pos 0.9 -- jeu words
-		~spat_jeu_3 = Synth.new(
+		~spat_jeu_words = Synth.new(
 			\spat_mono,
 			[
 				\amp, 0,
@@ -99,7 +99,7 @@
 		);
 
 		// Chaîne de spatialisation 2 (acousmonium)
-		~spat_input_stereo_acousmonium = Synth.new(
+/*		~spat_input_stereo_acousmonium = Synth.new(
 			\spat_stereo_acousmonium,
 			[
 				\amp, -60,    // Commence silencieux
@@ -109,11 +109,11 @@
 				\out, ~bus[\master_multichannel]
 			],
 			~spatGrp
-		);
+		);*/
 
-		// ===== INPUT BAYA SYNTHS =====
+		// ===== INPUT BAYA ENVOI DE MOTS SPATIALISES =====
 
-		// Input baya mono (hardware input 15)
+		// Input baya mono --- mots pendant l'expo
 		~input_baya_synth = Synth.new(
 			\audio_in_baya_mono,
 			[
@@ -124,7 +124,7 @@
 			~mainGrp
 		);
 
-		// Chaîne de spatialisation baya
+		// Chaîne de spatialisation baya pour les mots
 		~spat_baya = Synth.new(
 			\spat_baya,
 			[
@@ -137,10 +137,34 @@
 			~spatGrp
 		);
 
+
+		/// ICI BAYA RENTRE SUR 3 - 4 de la carte
+		// il joue son live en mono sur 3
+		// et joue des éléments indépendant spatiaux sur 4
+		~input_baya_live = Synth.new(
+			\audio_in_baya_live_mono_to_stereo,
+			[
+				\amp, 0,
+				\inBus, 2, // entrée 3 de la carte son
+				\out, ~bus[\input_stereo]
+			],
+			~mainGrp
+		);
+
+		~input_baya_live_event_spat = Synth.new(
+			\audio_in_baya_live_mono_to_spat,
+			[
+				\amp, 0,
+				\inBus, 3, // entrée 4 de la carte son
+				\out, ~bus[\master_multichannel]
+			],
+			~mainGrp
+		);
+
 		// ===== INPUT MULTICHANNEL SYNTH =====
 
 		// Input multichannel direct (hardware inputs 0-11)
-		~input_multichannel_synth = Synth.new(
+		/*~input_multichannel_synth = Synth.new(
 			\audio_in_multichannel,
 			[
 				\amp, 0,
@@ -148,7 +172,7 @@
 				\out, ~bus[\master_multichannel]
 			],
 			~mainGrp
-		);
+		);*/
 
 		// Version directe (commentée)
 		// ~input_stereo_synth = Synth.new(
