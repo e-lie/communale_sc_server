@@ -215,7 +215,7 @@
 
 	"OSC event handlers initialized (/lesmots)".postln;
 
-		// -----________--------_______--------_
+	// -----________--------_______--------_
 	// les mini-sons mono spatialisés pendant le live de baya
 	// -----________--------_______--------_
 
@@ -232,8 +232,6 @@
 	}, '/mini_sons_baya');
 
 	"OSC event handlers initialized (/mini_sons_baya)".postln;
-
-
 
 	// -----________--------_______--------_
 	// ALARM -- main bouton -- jackpot tout part à volo
