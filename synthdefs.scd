@@ -3,6 +3,26 @@
 // INSTRUMENTS
 // -----________--------_______--------_
 
+SynthDef(\sonar_fx, {
+	arg out=0, freq=75, amp=(-5), max=3, atk=0.005, rel=8, start=0.85, stop=(-0.16);
+	var sig, pos, mod, env;
+
+	env = EnvGen.kr(Env([0,1,0],[atk, rel-atk], -4), doneAction:2);
+
+	mod = Env.perc(atk * 2, rel/2, 0.5).kr();
+
+	freq = freq * (1 + Env.perc(atk, rel, max, -6).ar());
+
+	pos = EnvGen.kr(Env([start,stop,stop],[atk, rel], -2));
+
+
+	sig = SinOscFB.ar(freq, mod);
+	sig = PanAz.ar(12, sig,pos, 1, 1.7);
+
+	sig = sig.clip2 * amp.dbamp * env;
+	Out.ar(out, sig);
+}).add;
+
 SynthDef(\alarm, {
 	arg freq= 220, out=0, amp=(-5), rate=1, pos=0.0, shape=0.5, atk=1, rel=2;
 	var sig, mod, wave, env;

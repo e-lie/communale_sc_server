@@ -241,8 +241,11 @@
 		arg msg, time, addr, recvPort;
 		var virgule, glitchy;
 
+
+		~sonar_1 = Synth(\sonar_fx, [\atk, 0.2,\freq, 70,\start, 0.7, \stop, -0.16, \max, 3, \rel, 2, \amp, -12]);
+		~sonar_2 = Synth(\sonar_fx, [\atk, 0.2,\freq, 70,\start, 0.85, \stop, 1.66, \max, 3, \rel, 2, \amp, -12]);
 		// Create the synth
-		~glitter = Synth(\sample_player_multichannel, [\buf, ~buffers[\alarm][0], \amp, -10, \rel, 4]);
+	/*	~glitter = Synth(\sample_player_multichannel, [\buf, ~buffers[\alarm][0], \amp, -10, \rel, 4]);
 
 		virgule = Routine{
 			var atk=0.25, rel=12, freq=440, rate=1;
@@ -299,7 +302,7 @@
 			~spat_jeu_2.set(\pos,0.0);
 
 		}.play;
-
+*/
 	}, '/bouton');
 
 
