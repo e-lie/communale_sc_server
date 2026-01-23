@@ -102,7 +102,7 @@ SynthDef(\sample_player_multichannel, {
 }).add;
 
 /// lecteur bande son
-SynthDef(\sample_player_multichannel, {
+SynthDef(\sample_player_bande_son, {
 	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2;
 	var sig, envout;
 
