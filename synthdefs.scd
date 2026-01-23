@@ -101,6 +101,35 @@ SynthDef(\sample_player_multichannel, {
 	Out.ar(out, sig);
 }).add;
 
+/// lecteur bande son
+SynthDef(\sample_player_multichannel, {
+	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2;
+	var sig, envout;
+
+	envout = EnvGen.kr(Env([1, 0], [rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
+	sig = PlayBuf.ar(2, buf, rate, doneAction:2);
+
+	sig = [
+		sig[0],     // Enceinte 0 (canal gauche)
+		sig[0],     // Enceinte 1 (canal gauche)
+		sig[0],     // Enceinte 2 (canal gauche)
+		sig[0],     // Enceinte 3 (canal gauche)
+		sig[0],     // Enceinte 4 (canal gauche)
+		sig[1],     // Enceinte 5 (canal gauche)
+		sig[1],     // Enceinte 6 (canal gauche)
+		sig[1],     // Enceinte 7 (canal gauche)
+		sig[1],     // Enceinte 8 (canal gauche)
+		sig[1],    // Enceinte 9 (canal droit)
+		sig[1],   // Enceinte 10 (canal droit)
+		sig[0]    // Enceinte 11 (canal droit)
+	];
+
+	sig = sig * envout;
+	sig = sig * amp.dbamp;
+
+	Out.ar(out, sig);
+}).add;
+
 
 // -----________--------_______--------_
 // SPATIALISATION
