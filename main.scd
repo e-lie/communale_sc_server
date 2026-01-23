@@ -48,6 +48,14 @@ s.waitForBoot({
 });
 )
 
+//PLAYLIST LECTEUR
+//lancement de la playlist stereo
+~bande_son = Synth(\sample_player_bande_son, [\buf, ~buffers[\bande_son][0]]);
+//changement pour play un peu du multichannel
+~bande_son.set(\kill, 1);
+//
+~multi_bande_son = Synth(\sample_player_multichannel, [\buf, ~buffers[\multi_bo][0]]);
+
 // test dépot git pour avancer
 
 ~test = Synth(\test, [\out, ~bus[\master_multichannel], \amp, -25]);

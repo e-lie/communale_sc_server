@@ -101,13 +101,17 @@ SynthDef(\sample_player_multichannel, {
 	Out.ar(out, sig);
 }).add;
 
+// ~test = Synth(\sample_player_multichannel, [\buf, ~buffers[\multi_bo][0]]);
+
+
+
 /// lecteur bande son
 SynthDef(\sample_player_bande_son, {
-	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=0.2;
+	arg buf, amp=(-5), out=0, rate=1, kill=0, rel=10, loop=1;
 	var sig, envout;
 
 	envout = EnvGen.kr(Env([1, 0], [rel], -4), kill, doneAction:2); // pour retrig le sample on veux le kill d'abord
-	sig = PlayBuf.ar(2, buf, rate, doneAction:2);
+	sig = PlayBuf.ar(2, buf, rate, loop:loop, doneAction:2);
 
 	sig = [
 		sig[0],     // Enceinte 0 (canal gauche)
@@ -129,6 +133,8 @@ SynthDef(\sample_player_bande_son, {
 
 	Out.ar(out, sig);
 }).add;
+
+// ~bande_son.set(\kill, 1);
 
 
 // -----________--------_______--------_
