@@ -14,7 +14,7 @@
 		"  %: %".format(i, src.name).postln;
 	};
 
-	// ===== MASTER VOLUME - CC 84 =====
+	// ===== MASTER VOLUME =====
 	MIDIdef.cc(\masterVolume, {
 		arg val, num, chan, src;
 		var dbVal, sliderVal;
@@ -23,7 +23,7 @@
 		dbVal = val.linlin(0, 127, -30, 0);
 		sliderVal = val.linlin(0, 127, 0, 1);
 
-	
+
 		~master_multichannel.set(\amp, dbVal);
 
 
@@ -36,11 +36,11 @@
 			}.defer;
 		});
 
-	}, 20); // CC number 84
+	}, 58);
 
-	"MIDI: CC 20 mapped to Master Volume (-30dB to 0dB)".postln;
+	"MIDI: CC 58 mapped to Master Volume (-30dB to 0dB)".postln; // 58midimix 20lcxl
 
-	// ===== INPUT STEREO VOLUME - CC 36 =====
+	// ===== INPUT STEREO VOLUME =====
 	MIDIdef.cc(\inputStereoVolume, {
 		arg val, num, chan, src;
 		var dbVal, sliderVal;
@@ -61,11 +61,11 @@
 			}.defer;
 		});
 
-	}, 36); // CC number 36
+	}, 59);
 
-	"MIDI: CC 36 mapped to Input Stereo Volume (-30dB to 0dB)".postln;
+	"MIDI: CC 59 mapped to Input Stereo Volume (-30dB to 0dB)".postln; // 59midimix 36 lcxl
 
-	// ===== INPUT BAYA VOLUME - CC 19 =====
+	// ===== INPUT BAYA VOLUME =====
 	MIDIdef.cc(\inputBayaVolume, {
 		arg val, num, chan, src;
 		var dbVal, sliderVal;
@@ -86,11 +86,11 @@
 			}.defer;
 		});
 
-	}, 19); // CC number 19
+	}, 54);
 
-	"MIDI: CC 19 mapped to Input Baya Volume (-30dB to 0dB)".postln;
+	"MIDI: CC 54 mapped to Input Baya Volume (-30dB to 0dB)".postln; // midimix 54 lcxl 19
 
-	// ===== INPUT MULTICHANNEL VOLUME - CC 56 =====
+	// ===== INPUT MULTICHANNEL VOLUME =====
 	MIDIdef.cc(\inputMultichannelVolume, {
 		arg val, num, chan, src;
 		var dbVal, sliderVal;
@@ -111,11 +111,11 @@
 			}.defer;
 		});
 
-	}, 56); // CC number 56
+	}, 60);
 
-	"MIDI: CC 56 mapped to Input Multichannel Volume (-30dB to 0dB)".postln;
+	"MIDI: CC 60 mapped to Input Multichannel Volume (-30dB to 0dB)".postln; // midimix 60 lcxl 56
 
-	// ===== INPUT STEREO POS0 (LEFT) - CC 13 =====
+	// ===== INPUT STEREO POS0 (LEFT) =====
 	MIDIdef.cc(\inputStereoPos0, {
 		arg val, num, chan, src;
 		var posVal, sliderVal;
@@ -136,11 +136,11 @@
 			}.defer;
 		});
 
-	}, 13); // CC number 13
+	}, 16);
 
-	"MIDI: CC 13 mapped to Input Stereo Position 0 (Left channel, 0 to 2)".postln;
+	"MIDI: CC 16 mapped to Input Stereo Position 0 (Left channel, 0 to 2)".postln; // midimix 16 lcxl 13
 
-	// ===== INPUT STEREO POS1 (RIGHT) - CC 29 =====
+	// ===== INPUT STEREO POS1 (RIGHT) =====
 	MIDIdef.cc(\inputStereoPos1, {
 		arg val, num, chan, src;
 		var posVal, sliderVal;
@@ -161,9 +161,9 @@
 			}.defer;
 		});
 
-	}, 29); // CC number 29
+	}, 17);
 
-	"MIDI: CC 29 mapped to Input Stereo Position 1 (Right channel, 0 to 2)".postln;
+	"MIDI: CC 17 mapped to Input Stereo Position 1 (Right channel, 0 to 2)".postln; // midimix 17 lcxl 29
 
 	// ===== INPUT BAYA POS - CC 35 =====
 	MIDIdef.cc(\inputBayaPos, {
@@ -190,7 +190,7 @@
 
 	"MIDI: CC 35 mapped to Input Baya Position (0 to 2)".postln;
 
-	// ===== INPUT STEREO CROSSFADE - CC 49 =====
+	// ===== INPUT STEREO CROSSFADE =====
 	MIDIdef.cc(\inputStereoCrossfade, {
 		arg val, num, chan, src;
 		var amp1, amp2, crossfade, sliderVal;
@@ -219,9 +219,9 @@
 			}.defer;
 		});
 
-	}, 49); // CC number 49
+	}, 18);
 
-	"MIDI: CC 49 mapped to Input Stereo Crossfade (0=initial, 63=mix, 127=acousmonium)".postln;
+	"MIDI: CC 18 mapped to Input Stereo Crossfade (0=initial, 63=mix, 127=acousmonium)".postln; //midimix 18 lcxl 49
 
 	// ===== ACOUSMONIUM HP 0 & 11 - CC 77 =====
 	MIDIdef.cc(\acousmoniumHP0_11, {
