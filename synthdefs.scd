@@ -134,8 +134,9 @@ SynthDef(\sample_player_bande_son, {
 	Out.ar(out, sig);
 }).add;
 
+// ~player = Synth(\sample_player_bande_son, [\buf, ~buffers[\press_empty][0]]);
 // ~bande_son.set(\kill, 1);
-
+// ~player.set(\kill, 1);
 
 // -----________--------_______--------_
 // SPATIALISATION
